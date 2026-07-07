@@ -1,0 +1,118 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+import { blogPostingSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('writing', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  structuredData={blogPostingSchema({
+    headline: post.data.title,
+    description: post.data.description,
+    slug: post.id,
+    datePublished: post.data.pubDate,
+    dateModified: post.data.updatedDate,
+  })}
+>
+  <article class="post">
+    <header class="wrap post-header">
+      <p class="eyebrow">WRITING</p>
+      <h1>{post.data.title}</h1>
+      <div class="meta">
+        <time datetime={post.data.pubDate.toISOString()}>{dateFormat.format(post.data.pubDate)}</time>
+        {post.data.tags.length > 0 && (
+          <ul class="tags">
+            {post.data.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </header>
+    <div class="wrap prose">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .post-header {
+    padding-block: 56px 30px;
+    background: var(--cream3);
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  }
+
+  .post-header .eyebrow {
+    color: var(--oxblood);
+    margin: 0 0 14px;
+  }
+
+  .post-header h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(30px, 5vw, 46px);
+    letter-spacing: -0.02em;
+    color: var(--primary);
+    margin: 0 0 18px;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .tags {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tags li {
+    border: 1px solid color-mix(in oklab, var(--ink) 20%, transparent);
+    border-radius: 20px;
+    padding: 3px 10px;
+    letter-spacing: 0.03em;
+  }
+
+  .prose {
+    padding-block: 44px 70px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--ink);
+    max-width: 42em;
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 2em;
+  }
+
+  .prose :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

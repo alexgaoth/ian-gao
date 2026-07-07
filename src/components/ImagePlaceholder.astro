@@ -1,0 +1,43 @@
+---
+interface Props {
+  label: string;
+  height?: string;
+  radius?: string;
+}
+const { label, height = '280px', radius = '8px' } = Astro.props;
+---
+
+<div class="placeholder" style={`height:${height};border-radius:${radius}`} role="img" aria-label={`${label} (photo not yet supplied)`}>
+  <span>{label}<br /><em>photo pending</em></span>
+</div>
+
+<style>
+  .placeholder {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: repeating-linear-gradient(
+      45deg,
+      color-mix(in oklab, var(--ink) 8%, var(--cream)),
+      color-mix(in oklab, var(--ink) 8%, var(--cream)) 10px,
+      color-mix(in oklab, var(--ink) 4%, var(--cream)) 10px,
+      color-mix(in oklab, var(--ink) 4%, var(--cream)) 20px
+    );
+    border: 1.5px solid color-mix(in oklab, var(--ink) 24%, transparent);
+  }
+
+  .placeholder span {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .placeholder em {
+    font-style: normal;
+    opacity: 0.75;
+  }
+</style>

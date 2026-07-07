@@ -1,0 +1,57 @@
+---
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+
+<div class="ticker" role="presentation">
+  <div class="track">
+    {[0, 1].map(() => (
+      items.map((item) => (
+        <>
+          <span class="item">{item}</span>
+          <span class="sep" aria-hidden="true">◆</span>
+        </>
+      ))
+    ))}
+  </div>
+</div>
+
+<style>
+  .ticker {
+    background: var(--primary-dd);
+    overflow: hidden;
+    border-top: 1px solid var(--primary-tint);
+  }
+
+  .track {
+    display: flex;
+    white-space: nowrap;
+    width: max-content;
+    animation: tick 34s linear infinite;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    padding-block: 11px;
+  }
+
+  .item {
+    padding-inline: 26px;
+  }
+
+  .sep {
+    opacity: 0.4;
+  }
+
+  @keyframes tick {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+</style>

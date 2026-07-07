@@ -1,0 +1,362 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SITE } from '../lib/site';
+
+const apScores = [
+  ['AP European History', '5'],
+  ['AP Chinese Language and Culture', '5'],
+  ['AP English Language and Composition', '5'],
+  ['AP US History', '5'],
+  ['AP Calculus AB', '5'],
+  ['AP Physics 1', '5'],
+];
+
+const leadership = [
+  {
+    org: 'Justice For All',
+    role: 'Co-founder and Vice President',
+    dates: '2024 – present',
+    body: 'A nonprofit promoting courtwatching among young people. Partnered with the San Jose Public Defender’s Office, collecting data that informed the office’s strategy for indigent clients, and evaluated the effectiveness of the Racial Justice Act. Now 250+ interns across 5 states, 10 chapters nationally, and 1,000+ cases watched and recorded.',
+  },
+  {
+    org: 'Rural Debate Initiative (RuDi)',
+    role: 'Debate Coach',
+    dates: 'Sep 2024 – present',
+    body: 'Taught weekly speech and debate classes to a cohort of 10 middle and high school students at Jay Pritzker Academy in Cambodia, and hosted online workshops for students in rural Pennsylvania, Cambodia, and Somaliland.',
+  },
+  {
+    org: 'District 10 Youth Advisory Council',
+    role: 'Youth Council Member',
+    dates: 'Aug 2025 – present',
+    body: 'Weekly meetings providing policy recommendations to San Jose City Council member George Casey; organized events like YouthConnect to grow civic engagement among young people; researched community issues and drafted policy resolutions.',
+  },
+];
+
+const awards = ['National Spanish Exam Gold Medal (2024)', 'National Speech and Debate Association (NSDA) Degree of Special Distinction'];
+
+const pressMentions = [
+  { label: 'Leland Speech and Debate — team roster & results', status: 'link pending' },
+  { label: 'Leland High School newspaper — coverage of track & debate activity', status: 'link pending' },
+];
+---
+
+<Layout
+  title="About"
+  description="Ian Gao's background: Leland High School academics, debate leadership, research, campaign work, and the nonprofit he co-founded."
+>
+  <header class="page-header">
+    <div class="wrap">
+      <p class="eyebrow">ABOUT</p>
+      <h1>The longer version</h1>
+      <p class="intro">
+        Ian Gao ({SITE.legalName}) is a senior at {SITE.school} in {SITE.locality}. Mandarin Chinese and English are
+        both native languages; Spanish is conversational. Outside of debate, research, and the stage, most of his
+        time goes to public speaking and research in history and the social sciences.
+      </p>
+    </div>
+  </header>
+
+  <section class="section bg-cream">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>Education</h2>
+        <span class="tag">LELAND HIGH SCHOOL · 2023–PRESENT</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat-block">
+          <span class="stat-num">4.33</span>
+          <p>Weighted GPA</p>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num">4.00</span>
+          <p>Unweighted GPA</p>
+        </div>
+        <div class="stat-block">
+          <span class="stat-num">1540</span>
+          <p>SAT</p>
+        </div>
+      </div>
+      <p class="ap-label">AP coursework (all scores of 5):</p>
+      <ul class="ap-list">
+        {apScores.map(([name]) => (
+          <li>{name}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section id="leadership" class="section bg-cream3">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>Leadership</h2>
+        <span class="tag">BEYOND THE TEAM</span>
+      </div>
+      <div class="leadership-grid">
+        {leadership.map((item) => (
+          <div class="leadership-card">
+            <div class="leadership-head">
+              <h3>{item.org}</h3>
+              <span>{item.dates}</span>
+            </div>
+            <p class="leadership-role">{item.role}</p>
+            <p class="leadership-body">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-cream">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>Awards</h2>
+        <span class="tag">HONORS</span>
+      </div>
+      <ul class="award-list">
+        {awards.map((a) => (
+          <li>{a}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-cream3">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>Elsewhere</h2>
+        <span class="tag">EXTERNAL COVERAGE</span>
+      </div>
+      <p class="press-note">
+        Ian is also referenced on a couple of pages outside this site. Links go live here once they're confirmed.
+      </p>
+      <ul class="press-list">
+        {pressMentions.map((p) => (
+          <li>
+            <span>{p.label}</span>
+            <em>({p.status})</em>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-cream contact-cta">
+    <div class="wrap">
+      <p>
+        Want the short version instead? <a href="/">Back to the homepage</a> or{' '}
+        <a href={`mailto:${SITE.email}`}>send an email</a>.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    background: var(--primary);
+    color: var(--on-primary);
+    padding-block: 60px 50px;
+  }
+
+  .page-header .eyebrow {
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 58px);
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    color: var(--on-primary);
+  }
+
+  .intro {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--on-primary-soft);
+    max-width: 40em;
+    margin: 0;
+  }
+
+  .section {
+    padding-block: clamp(46px, 7vw, 74px);
+  }
+
+  .bg-cream {
+    background: var(--cream);
+  }
+
+  .bg-cream3 {
+    background: var(--cream3);
+    border-top: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 26px;
+  }
+
+  .stat-block {
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 22px;
+    background: var(--cream2);
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 34px;
+    color: var(--oxblood);
+    display: block;
+  }
+
+  .stat-block p {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 8px 0 0;
+    text-transform: uppercase;
+  }
+
+  .ap-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+
+  .ap-list {
+    columns: 1;
+    column-gap: 30px;
+    padding-left: 20px;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  @media (min-width: 640px) {
+    .ap-list {
+      columns: 2;
+    }
+  }
+
+  .leadership-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 780px) {
+    .leadership-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .leadership-card {
+    border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+    border-radius: 10px;
+    padding: 22px;
+    background: var(--cream2);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .leadership-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .leadership-head h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .leadership-head span {
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .leadership-role {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--oxblood);
+    margin: 0;
+  }
+
+  .leadership-body {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .award-list {
+    padding-left: 20px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  .press-note {
+    font-size: 15px;
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+
+  .press-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .press-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    color: var(--ink);
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+    padding-bottom: 10px;
+  }
+
+  .press-list em {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 12.5px;
+    font-family: var(--font-display);
+    letter-spacing: 0.03em;
+  }
+
+  .contact-cta p {
+    font-size: 16px;
+    color: var(--muted);
+    text-align: center;
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,143 @@
+/* Deep Teal palette — baked from the design export's "Deep Teal" preset (h:196 c:52, accent #d8a24a) */
+:root {
+  --primary: oklch(0.37 0.0468 196);
+  --primary-tint: oklch(0.47 0.0468 196);
+  --primary-d: oklch(0.31 0.0445 196);
+  --primary-dd: oklch(0.26 0.0421 196);
+  --accent: #dda852;
+  --oxblood: oklch(0.46 0.15 27);
+  --cream: oklch(0.928 0.021 82);
+  --cream2: oklch(0.955 0.026 84);
+  --cream3: oklch(0.892 0.024 80);
+  --ink: oklch(0.30 0.018 62);
+  --muted: oklch(0.46 0.02 70);
+  --on-primary: oklch(0.945 0.028 88);
+  --on-primary-soft: oklch(0.74 0.0234 196);
+
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-hand: 'Caveat', cursive;
+
+  --content-width: 1080px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--oxblood);
+  text-decoration: none;
+}
+
+a:hover {
+  color: color-mix(in oklab, var(--oxblood) 80%, black);
+}
+
+/* inline links in body copy need a non-color cue, not just a color shift */
+p a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--primary-dd);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* visible keyboard focus everywhere, regardless of component */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+
+@media (min-width: 640px) {
+  .wrap {
+    padding-inline: 40px;
+  }
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 16px;
+  margin-bottom: 34px;
+}
+
+.section-heading h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 38px);
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  margin: 0;
+}
+
+.section-heading .tag {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

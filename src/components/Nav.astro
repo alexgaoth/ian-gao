@@ -1,0 +1,108 @@
+---
+const links = [
+  { label: 'DEBATE', href: '/#debate' },
+  { label: 'RESEARCH', href: '/#research' },
+  { label: 'CAMPAIGNING', href: '/#campaigning' },
+  { label: 'STAGE', href: '/#stage' },
+  { label: 'WRITING', href: '/writing/' },
+];
+---
+
+<nav>
+  <div class="wrap bar">
+    <a href="/" class="logo">Ian Gao</a>
+    <div class="links">
+      {links.map((link) => (
+        <a href={link.href}>{link.label}</a>
+      ))}
+      <a href="/#contact" class="cta">
+        <span class="dot" aria-hidden="true"></span>OPEN TO TALK
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--primary);
+    border-bottom: 1px solid var(--primary-tint);
+  }
+
+  .bar {
+    padding-block: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+    color: var(--on-primary);
+  }
+
+  .logo:hover {
+    color: var(--on-primary);
+    opacity: 0.85;
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .links > a:not(.cta) {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--on-primary-soft);
+  }
+
+  .links > a:not(.cta):hover {
+    color: var(--accent);
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+    background: var(--accent);
+    padding: 7px 13px;
+    border-radius: 20px;
+  }
+
+  .cta:hover {
+    filter: brightness(1.06);
+    color: var(--primary);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: inline-block;
+  }
+
+  @media (max-width: 560px) {
+    .links {
+      gap: 14px;
+    }
+  }
+</style>

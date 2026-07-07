@@ -1,0 +1,149 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('writing', ({ data }) => !data.draft);
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout
+  title="Writing"
+  description="Essays from Ian Gao on philosophy, politics, and policy — grounded in debate, research, and campaign work."
+>
+  <header class="page-header">
+    <div class="wrap">
+      <p class="eyebrow">WRITING</p>
+      <h1>Essays &amp; notes</h1>
+      <p class="intro">
+        Long-form thinking that doesn't fit on a debate flow. <a href="/rss.xml">RSS feed →</a>
+      </p>
+    </div>
+  </header>
+
+  <section class="section bg-cream">
+    <div class="wrap">
+      {posts.length === 0 ? (
+        <div class="empty-state">
+          <p>
+            Nothing published here yet — the first essays are in progress. In the meantime, the{' '}
+            <a href="/#debate">debate record</a> and <a href="/#research">research</a> are the best sense of how
+            Ian argues a case.
+          </p>
+        </div>
+      ) : (
+        <div class="post-list">
+          {posts.map((post) => (
+            <a href={`/writing/${post.id}`} class="post-row">
+              <div class="post-head">
+                <h2>{post.data.title}</h2>
+                <span>Read →</span>
+              </div>
+              <p>{post.data.description}</p>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    background: var(--primary);
+    color: var(--on-primary);
+    padding-block: 60px 50px;
+  }
+
+  .page-header .eyebrow {
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 58px);
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    color: var(--on-primary);
+  }
+
+  .intro {
+    font-size: 16px;
+    color: var(--on-primary-soft);
+    margin: 0;
+  }
+
+  .intro a {
+    color: var(--accent);
+  }
+
+  .section {
+    padding-block: clamp(46px, 7vw, 74px);
+  }
+
+  .bg-cream {
+    background: var(--cream);
+  }
+
+  .empty-state {
+    border: 1px dashed color-mix(in oklab, var(--ink) 24%, transparent);
+    border-radius: 10px;
+    padding: 32px;
+    background: var(--cream2);
+  }
+
+  .empty-state p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 50em;
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-row {
+    display: block;
+    padding: 26px 4px;
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+  }
+
+  .post-row:hover {
+    padding-left: 16px;
+  }
+
+  .post-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .post-head h2 {
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .post-head span {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--oxblood);
+    flex: none;
+  }
+
+  .post-row p {
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 8px 0 0;
+    max-width: 60em;
+  }
+</style>

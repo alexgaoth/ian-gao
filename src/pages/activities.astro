@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const activities = [
+  {
+    name: 'Debate',
+    dates: 'Aug 2024 – present',
+    body: 'President of Leland Speech and Debate, Captain of Lincoln-Douglas (2025–26). Varsity competitor in LD, Policy, Duo Interpretation, and Extemporaneous Speaking — 19th in the nation at NSDA Nationals (2026).',
+    more: { href: '/#debate', label: 'Full record →' },
+  },
+  {
+    name: 'Research',
+    dates: '2025 – present',
+    body: 'Research at the Cambridge Center of International Research, UC Santa Barbara, and UC Santa Cruz — spanning international relations, criminal-justice policy, and philosophy.',
+    more: { href: '/#research', label: 'Research projects →' },
+  },
+  {
+    name: 'Campaigning',
+    dates: 'Sep 2024 – present',
+    body: 'Campaign work for Matt Mahan (Governor of California) and Evan Low (Congress) — phone banking, canvassing, and volunteer coordination.',
+    more: { href: '/#campaigning', label: 'Campaign work →' },
+  },
+  {
+    name: 'Theatre',
+    dates: 'Aug 2023 – present',
+    body: 'Six productions with Leland Theatre, including the lead role of Algernon in The Importance of Being Earnest.',
+    more: { href: '/#stage', label: 'On stage →' },
+  },
+  {
+    name: 'Track & Field / Cross Country',
+    dates: 'Jan 2025 – present',
+    body: 'Varsity competitor in long jump, high jump, and cross country.',
+  },
+  {
+    name: 'Justice For All',
+    dates: '2024 – present',
+    body: 'Co-founder and Vice President of a nonprofit promoting courtwatching among young people, partnered with the San Jose Public Defender’s Office. 250+ interns across 5 states, 10 chapters, 1,000+ cases watched.',
+    more: { href: '/about#leadership', label: 'More on /about →' },
+  },
+  {
+    name: 'Rural Debate Initiative (RuDi)',
+    dates: 'Sep 2024 – present',
+    body: 'Debate coach teaching weekly classes at Jay Pritzker Academy in Cambodia, plus workshops for students in rural Pennsylvania and Somaliland.',
+    more: { href: '/about#leadership', label: 'More on /about →' },
+  },
+  {
+    name: 'District 10 Youth Advisory Council',
+    dates: 'Aug 2025 – present',
+    body: 'Youth council member providing policy recommendations to San Jose City Council member George Casey; organized YouthConnect civic-engagement events.',
+    more: { href: '/about#leadership', label: 'More on /about →' },
+  },
+];
+---
+
+<Layout
+  title="Activities"
+  description="Everything Ian Gao does outside the classroom — debate, research, campaigns, theatre, track, and the nonprofit he co-founded."
+>
+  <header class="page-header">
+    <div class="wrap">
+      <p class="eyebrow">ACTIVITIES</p>
+      <h1>Where the time actually goes</h1>
+    </div>
+  </header>
+
+  <section class="section bg-cream">
+    <div class="wrap">
+      <div class="activity-grid">
+        {activities.map((a) => (
+          <div class="activity-card">
+            <div class="activity-head">
+              <h2>{a.name}</h2>
+              <span>{a.dates}</span>
+            </div>
+            <p>{a.body}</p>
+            {a.more && <a href={a.more.href}>{a.more.label}</a>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    background: var(--primary);
+    color: var(--on-primary);
+    padding-block: 60px 50px;
+  }
+
+  .page-header .eyebrow {
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+
+  .page-header h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(36px, 6vw, 58px);
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--on-primary);
+  }
+
+  .section {
+    padding-block: clamp(46px, 7vw, 74px);
+  }
+
+  .bg-cream {
+    background: var(--cream);
+  }
+
+  .activity-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  @media (min-width: 700px) {
+    .activity-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .activity-card {
+    border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+    border-radius: 10px;
+    padding: 24px;
+    background: var(--cream2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .activity-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .activity-head h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .activity-head span {
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .activity-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .activity-card a {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    color: var(--oxblood);
+    margin-top: auto;
+  }
+</style>
