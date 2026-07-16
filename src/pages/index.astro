@@ -6,7 +6,8 @@ import { Image } from 'astro:assets';
 import { SITE } from '../lib/site';
 import { personSchema } from '../lib/schema';
 
-import portrait from '../assets/ian-nationals.jpg';
+import portrait from '../assets/ian-portrait.jpg';
+import natsPhoto from '../assets/ian-nationals.jpg';
 import stage1 from '../assets/ian-stage-1.png';
 import stage2 from '../assets/ian-stage-2.jpg';
 import ucsbPhoto from '../assets/ian-ucsb-research.png';
@@ -114,7 +115,7 @@ const roles = [
       <div class="portrait-frame">
         <Image
           src={portrait}
-          alt="Ian Gao holding his award at the 2026 NSDA National Speech and Debate Tournament"
+          alt="Ian Gao, senior at Leland High School"
           width={520}
           loading="eager"
           fetchpriority="high"
@@ -155,6 +156,16 @@ const roles = [
         <h2>Speech and Debate</h2>
         <span class="tag">LD · POLICY · DUO · EXTEMP</span>
       </div>
+      <figure class="section-photo center">
+        <Image
+          src={natsPhoto}
+          alt="Ian holding his award at the 2026 NSDA National Speech and Debate Tournament"
+          widths={[380, 760]}
+          sizes="(min-width: 640px) 380px, 90vw"
+          loading="lazy"
+        />
+        <figcaption>At the 2026 NSDA National Tournament.</figcaption>
+      </figure>
       <div class="debate-grid">
         <div class="stat-card">
           <span class="kpi oxblood-text">19th</span>
