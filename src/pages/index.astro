@@ -2,44 +2,62 @@
 import Layout from '../layouts/Layout.astro';
 import Ticker from '../components/Ticker.astro';
 import ImagePlaceholder from '../components/ImagePlaceholder.astro';
+import { Image } from 'astro:assets';
 import { SITE } from '../lib/site';
 import { personSchema } from '../lib/schema';
 
-const tickerItems = [
-  'PRESIDENT · LELAND DEBATE',
-  '19TH IN THE NATION · LD',
-  'CCIR · UCSB · UCSC RESEARCH',
-  'MAHAN & LOW CAMPAIGNS',
-  'LEAD, THE IMPORTANCE OF BEING EARNEST',
-  'CO-FOUNDER, JUSTICE FOR ALL',
-];
+import portrait from '../assets/ian-nationals.jpg';
+import stage1 from '../assets/ian-stage-1.png';
+import stage2 from '../assets/ian-stage-2.jpg';
+import ucsbPhoto from '../assets/ian-ucsb-research.png';
+import mahanPhoto from '../assets/ian-mahan-campaign.png';
+import lebronPhoto from '../assets/ian-lebron.png';
+
+const tickerItems = ['LeBron is the GOAT'];
 
 const debateResults = [
   { event: 'NSDA Nationals, LD', result: '19th in the Nation', year: '2026' },
-  { event: 'CA State Championships', result: 'Top 30', year: '2026' },
+  { event: 'CA State Championships, LD', result: 'Top 30', year: '2026' },
   { event: 'Philhistorian Invitational, Open LD', result: 'Champion', year: '2024' },
-  { event: 'NSDA Last Chance Qualifier, Open LD', result: 'First Seed, Undefeated', year: '2025' },
+  { event: 'NSDA Last Chance Qualifier, Open LD', result: 'First Seed, Undefeated', year: '2025 & 2026' },
   { event: 'Stephen Stewart Invitational, Open LD', result: 'Quarterfinals', year: '2025' },
+];
+
+const debateBullets = [
+  'I lead a nationally competitive team of 200 students — ranked 10th in the nation, the best public-school program in our district and among the top in California — competing at regional and national tournaments.',
+  'I manage registration and communication for all judges, coaches, and tournaments, and oversee our ~20-person student leadership team of VPs and Chairs, heading biweekly leadership meetings and holding the team accountable.',
+  'I headed and executed a complete overhaul of the team — restructuring from 2 to 5 periods, building a tailored roster by event, and facilitating the transition to a new head coach.',
+  'As Captain of LD this past year, I wrote lesson plans and assignments for weekly meetings, mentored novice debaters, and led bimonthly topic-research sessions on issues like plea bargaining, the living wage, military intervention, and artificial general intelligence for my team of 20 debaters.',
 ];
 
 const research = [
   {
     org: 'Cambridge Center of International Research',
     tag: 'CCIR',
-    mentor: 'Mentored by Oxford Professor Othon Anastasakis',
-    body: 'Authored a 15,000-word original research paper, "Bosnia and Herzegovina and the Limits of International State-Building: How Stable Is the Post-Dayton Order?" Presented twice at CCIR Research Symposiums.',
+    mentor: 'Mentored by Oxford Professor Dr. Othon Anastasakis',
+    points: [
+      'Authored a 15,000-word original research paper, “Bosnia and Herzegovina and the Limits of International State-Building: How Stable Is the Post-Dayton Order?”',
+      'Presented twice at the CCIR Research Symposium.',
+    ],
   },
   {
     org: 'UC Santa Barbara — Summer Research Academies',
-    tag: 'Track 11: Policy Puzzle · Jun–Jul 2025',
+    tag: 'Track 11: Policy Puzzle · June–July 2025',
     mentor: 'Mentored by PhD candidate Travis Candeias',
-    body: 'Co-authored "A Model Policing Agency": Analyzing the Impact of the Collaborative Reform Initiative on Use of Force in San Francisco — used R to analyze SFPD use-of-force data from 2018–2023.',
+    points: [
+      'Earned an A in INT 93LS — Applied Research Methods for Policy Analysis, covering quasi-experimental design and latent-variable modeling for policy evaluation.',
+      'Co-authored “A Model Policing Agency: Analyzing the Impact of the Collaborative Reform Initiative on Use of Force in San Francisco.”',
+      'Used R to analyze large SFPD use-of-force datasets from 2018–2023, evaluating the Collaborative Reform Initiative’s effectiveness by incident severity and demographics.',
+    ],
   },
   {
     org: 'UC Santa Cruz — Science Internship Program',
-    tag: 'PHI-03 · Jun 2026–present',
+    tag: 'PHI-03 · June 2026–present',
     mentor: 'Mentored by philosophy PhD candidate Terri Preszle',
-    body: '"What is Love? — A Philosophical Inquiry." Close reading and annotation of academic literature, contributing to the mentor’s doctoral thesis.',
+    points: [
+      '“What is Love? — A Philosophical Inquiry.”',
+      'Close reading and annotation of ancient and contemporary philosophers on the many theories of love, contributing to my mentor’s doctoral thesis.',
+    ],
   },
 ];
 
@@ -48,22 +66,36 @@ const campaigns = [
     name: 'Matt Mahan for Governor of California',
     role: 'Campaign Intern & Phonebank Lead',
     dates: 'Feb 2026 – Jun 2026',
-    body: 'Led weekly phone banking sessions with 20+ volunteers, training them to reach tens of thousands of voters. Helped run town halls and rallies across the Bay Area, and organized canvassing and literature drops across thousands of homes.',
+    points: [
+      'Led weekly phone-banking sessions with 20+ volunteers, training them to reach tens of thousands of voters.',
+      'Boosted voter turnout by helping organize town halls, GOTV rallies, meet-and-greets, and an election watch party across the Bay Area.',
+      'Ran voter outreach — recruiting and managing volunteers for canvassing and literature drops across thousands of homes.',
+    ],
   },
   {
     name: 'Evan Low for Congress',
     role: 'Campaign Intern',
     dates: 'Sep 2024 – Nov 2024',
-    body: 'Phone banking, canvassing and literature drops (~200 houses door-to-door), and weekly team meetings on campaign strategy and event planning.',
+    points: [
+      'Phone banking, canvassing, and literature drops (~200 houses door-to-door).',
+      'Weekly team meetings on campaign strategy and event planning.',
+    ],
   },
 ];
 
-const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Being Earnest', 'Mamma Mia', 'Chicago', 'Clue'];
+const roles = [
+  { lead: 'Greg Pierotti, Rulon Stacey', rest: 'Aaron McKinney, Shadow & The Bailiff', show: 'The Laramie Project', season: 'Winter 2023' },
+  { rest: 'Kevin G / Ensemble', show: 'Mean Girls', season: 'Spring 2024' },
+  { lead: 'Algernon Moncrieff', show: 'The Importance of Being Earnest', season: 'Winter 2024' },
+  { rest: 'Sky', show: 'Mamma Mia', season: 'Spring 2025' },
+  { rest: 'Set Crew Lead', show: 'Chicago', season: 'Winter 2025' },
+  { lead: 'Colonel Mustard', show: 'Clue: On Stage', season: 'Spring 2026' },
+];
 ---
 
 <Layout
-  title={`${SITE.name} — Debate, Research & the Stage`}
-  description="Ian Gao — Leland HS senior. President of Leland Debate, ranked 19th nationally in LD. Research at CCIR, UCSB, UCSC. Campaigns, theatre, writing."
+  title="Ian Gao"
+  description="Ian Gao — senior at Leland High School. President of Leland Speech and Debate, ranked 19th nationally in LD. Research in history, policy analysis, and philosophy. Political campaigns, Leland theatre, essays."
   homepage
   structuredData={personSchema()}
 >
@@ -74,17 +106,19 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
         <p class="eyebrow accent-text">THE STUDY OF</p>
         <h1>Ian Gao</h1>
         <p class="tagline">philosophy&#8202;·&#8202;politics&#8202;·&#8202;policy</p>
-        <p class="lede">
-          A senior at Leland High School spending his last year of high school the way he's spent the last three:
-          on a debate flow, in a research seminar, and knocking on doors for candidates he believes in.
-        </p>
         <div class="cta-row">
           <a href="/writing/" class="btn btn-accent">Read the writing →</a>
           <a href="/#debate" class="btn btn-outline">The record</a>
         </div>
       </div>
       <div class="portrait-frame">
-        <ImagePlaceholder label="Ian Gao — portrait" height="320px" radius="6px" />
+        <Image
+          src={portrait}
+          alt="Ian Gao holding his award at the 2026 NSDA National Speech and Debate Tournament"
+          width={520}
+          loading="eager"
+          fetchpriority="high"
+        />
       </div>
     </div>
   </header>
@@ -95,50 +129,30 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
   <section class="section bg-cream">
     <div class="wrap who-grid">
       <div><p class="eyebrow oxblood-text">WHO I AM</p></div>
-      <div>
+      <div class="who-body">
         <p class="lead-line">
-          I spend most of my time arguing — on a debate flow, in research papers, and for candidates I think deserve
-          to win. Leland Debate, research at Cambridge and the UCs, and two California campaigns are three different
-          rooms where I've learned to make a case and then take it apart myself.
+          Hi! I'm Ian Gao, a senior at Leland High School and a student researcher at UC Santa Barbara in policy
+          analysis and UC Santa Cruz in philosophy.
         </p>
-        <div class="two-col">
-          <p>
-            On a debate flow I learned to hold a position and doubt it in the same breath — the strongest case is
-            the one that's already survived its best objection. That habit carried over into research: a
-            15,000-word paper on post-Dayton Bosnia, a data analysis of SFPD use-of-force incidents, and right now a
-            project on what love actually obligates us to.
-          </p>
-          <p>
-            Off the flow, that same instinct shows up differently — phone banking for Matt Mahan and Evan Low,
-            co-founding a courtwatching nonprofit with the San Jose Public Defender's Office, coaching debate for
-            students in Cambodia and rural Pennsylvania, and getting cast as Algernon this spring. This page is the
-            short version.
-          </p>
-        </div>
+        <p>
+          I'm also the President of Debate at Leland Speech and Debate, a program of 200+ students ranked third in
+          California and tenth in the nation. This summer I competed at the 2026 National Speech and Debate
+          Tournament, where I placed 19th in the nation in Lincoln-Douglas Debate.
+        </p>
+        <p>
+          Outside of research and debate, I enjoy acting as a cast member in Leland Theatre, interning for political
+          campaigns I believe in, increasing civic engagement among young people through courtwatching, playing
+          basketball, and learning a few songs on the guitar!
+        </p>
       </div>
-    </div>
-  </section>
-
-  <!-- ACTIVE RIGHT NOW -->
-  <section class="section bg-cream3 desk">
-    <div class="wrap desk-row">
-      <p class="eyebrow oxblood-text desk-label">ACTIVE<br />RIGHT NOW</p>
-      <div class="bars">
-        <div class="bar-item" style="height:100%;background:var(--oxblood)"><span>MAHAN CAMPAIGN</span></div>
-        <div class="bar-item" style="height:88%;background:var(--primary)"><span>UCSC RESEARCH</span></div>
-        <div class="bar-item" style="height:95%;background:var(--accent)"><span class="dark">DEBATE SEASON</span></div>
-        <div class="bar-item" style="height:78%;background:var(--ink)"><span>JUSTICE FOR ALL</span></div>
-        <div class="bar-item" style="height:84%;background:var(--muted)"><span>RUDI COACHING</span></div>
-      </div>
-      <p class="desk-note">…plus whatever round I'm prepping for this week.</p>
     </div>
   </section>
 
   <!-- DEBATE -->
-  <section id="debate" class="section bg-cream">
+  <section id="debate" class="section bg-cream3">
     <div class="wrap">
       <div class="section-heading">
-        <h2>Debate</h2>
+        <h2>Speech and Debate</h2>
         <span class="tag">LD · POLICY · DUO · EXTEMP</span>
       </div>
       <div class="debate-grid">
@@ -147,11 +161,11 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
           <p class="stat-label">IN THE NATION, LD (NSDA 2026)</p>
         </div>
         <div class="stat-card">
-          <span class="kpi-text">President</span>
-          <p class="stat-label">LELAND SPEECH &amp; DEBATE · CAPTAIN, LD 2025–26</p>
+          <span class="kpi-text">President of Debate</span>
+          <p class="stat-label">LELAND SPEECH &amp; DEBATE</p>
         </div>
         <div class="results-card">
-          <div class="results-head">SELECTED RESULTS</div>
+          <div class="results-head">DEBATE RESULTS</div>
           <table>
             <thead class="sr-only">
               <tr>
@@ -172,28 +186,42 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
           </table>
         </div>
       </div>
-      <p class="debate-footnote">
-        Leads a nationally competitive team of 300 students, ranked 3rd in the nation — managing tournament
-        registration, writing lesson plans, mentoring novice debaters, and running bimonthly topic research on
-        issues like plea bargaining, the living wage, wealth taxes, and artificial general intelligence.
-      </p>
+      <ul class="debate-bullets">
+        {debateBullets.map((b) => (
+          <li>{b}</li>
+        ))}
+      </ul>
     </div>
   </section>
 
   <!-- RESEARCH -->
-  <section id="research" class="section bg-cream3">
+  <section id="research" class="section bg-cream">
     <div class="wrap">
       <div class="section-heading">
         <h2>Research</h2>
         <span class="tag">HISTORY · POLICY · PHILOSOPHY</span>
       </div>
+      <figure class="section-photo center">
+        <Image
+          src={ucsbPhoto}
+          alt="Ian presenting a regression analysis of SFPD use-of-force data at UC Santa Barbara"
+          widths={[380, 760]}
+          sizes="(min-width: 640px) 380px, 90vw"
+          loading="lazy"
+        />
+        <figcaption>Presenting our SFPD use-of-force analysis at UC Santa Barbara.</figcaption>
+      </figure>
       <div class="research-grid">
         {research.map((r) => (
           <div class="research-card">
             <p class="research-tag">{r.tag}</p>
             <h3>{r.org}</h3>
             <p class="research-mentor">{r.mentor}</p>
-            <p class="research-body">{r.body}</p>
+            <ul class="card-bullets">
+              {r.points.map((p) => (
+                <li>{p}</li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
@@ -201,12 +229,22 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
   </section>
 
   <!-- CAMPAIGNING -->
-  <section id="campaigning" class="section bg-cream">
+  <section id="campaigning" class="section bg-cream3">
     <div class="wrap">
       <div class="section-heading">
         <h2>Campaigning</h2>
         <span class="tag">CALIFORNIA CAMPAIGNS</span>
       </div>
+      <figure class="section-photo">
+        <Image
+          src={mahanPhoto}
+          alt="Ian on the Matt Mahan for Governor campaign"
+          widths={[600, 1000, 1400]}
+          sizes="(min-width: 1080px) 1000px, 100vw"
+          loading="lazy"
+        />
+        <figcaption>On the Matt Mahan for Governor campaign.</figcaption>
+      </figure>
       <div class="campaign-grid">
         {campaigns.map((c) => (
           <div class="campaign-card">
@@ -215,7 +253,11 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
               <span class="campaign-dates">{c.dates}</span>
             </div>
             <p class="campaign-role">{c.role}</p>
-            <p class="campaign-body">{c.body}</p>
+            <ul class="card-bullets">
+              {c.points.map((p) => (
+                <li>{p}</li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
@@ -223,37 +265,64 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
   </section>
 
   <!-- STAGE -->
-  <section id="stage" class="section bg-cream3">
+  <section id="stage" class="section bg-cream">
     <div class="wrap">
       <div class="section-heading">
         <h2>On Stage</h2>
         <span class="tag">LELAND THEATRE</span>
       </div>
       <div class="stage-photos">
-        <ImagePlaceholder label="Production still" height="260px" radius="8px" />
-        <ImagePlaceholder label="Production still" height="260px" radius="8px" />
+        <div class="stage-cell">
+          <Image src={stage1} alt="Ian performing on stage with Leland Theatre" widths={[320, 640]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" />
+        </div>
+        <div class="stage-cell">
+          <Image src={stage2} alt="Ian delivering a scene on stage with Leland Theatre" widths={[320, 640]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" />
+        </div>
       </div>
       <p class="stage-body">
         Six productions with Leland Theatre since 2023 — <em>The Laramie Project</em>, <em>Mean Girls</em>,{' '}
-        <em>The Importance of Being Earnest</em> (lead, Algernon), <em>Mamma Mia</em>, <em>Chicago</em>, and{' '}
-        <em>Clue</em>.
+        <em>The Importance of Being Earnest</em>, <em>Mamma Mia</em>, <em>Chicago</em>, and <em>Clue</em>.
       </p>
-      <ul class="production-list">
-        {productions.map((p) => (
-          <li>{p}</li>
+      <ul class="roles-list">
+        {roles.map((r) => (
+          <li>
+            <span class="role-name">
+              {r.lead && <strong>{r.lead}</strong>}
+              {r.lead && r.rest ? ', ' : ''}
+              {r.rest}
+            </span>
+            <span class="role-show"><em>{r.show}</em></span>
+            <span class="role-season">{r.season}</span>
+          </li>
         ))}
       </ul>
-      <a href="https://youtu.be/_pUo7QA8DPk" class="stage-link" rel="noopener">Watch a performance sample ↗</a>
+      <a href="https://youtu.be/_pUo7QA8DPk" class="stage-link" rel="noopener">Watch some of my scenes! ↗</a>
     </div>
   </section>
 
-  <!-- PINNED ASIDE -->
-  <section class="pinned-wrap">
-    <div class="pinned-note">
-      <p>
-        off the record — also a Leland Track long-jumper, fluent enough in Spanish to have a gold medal to prove
-        it, and the reason Justice For All's group chat never sleeps.
+  <!-- BASKETBALL -->
+  <section id="basketball" class="section bg-cream3">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>Basketball</h2>
+        <span class="tag">OFF THE CLOCK</span>
+      </div>
+      <p class="basketball-body">
+        Despite being pretty mediocre at it, I love playing basketball with my brother and my friends — and watching
+        the NBA. LeBron is the GOAT.
       </p>
+      <div class="basketball-photos">
+        <figure class="bball-figure">
+          <ImagePlaceholder label="Me dunking" height="360px" radius="10px" />
+          <figcaption>Here's a picture of me dunking! (On an 8-foot rim, in fairness.)</figcaption>
+        </figure>
+        <figure class="bball-figure">
+          <div class="bball-cell">
+            <Image src={lebronPhoto} alt="Ian taking a selfie at an NBA game with LeBron James on the court behind him" widths={[360, 720]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" />
+          </div>
+          <figcaption>A selfie I took with LeBron — you can see him smiling ear to ear.</figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -261,7 +330,7 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
   <section id="contact" class="section bg-cream contact">
     <div class="wrap">
       <h2>Get in touch</h2>
-      <p class="contact-body">The best way to reach me is a short email — I read all of them.</p>
+      <p class="contact-body">The best way to reach me is a short email!</p>
       <div class="contact-row">
         <a href={`mailto:${SITE.email}`} class="btn btn-primary">✉&#8202;&#8202; Email me</a>
       </div>
@@ -323,14 +392,6 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     margin: 18px 0 0;
   }
 
-  .lede {
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--on-primary-soft);
-    margin: 26px 0 0;
-    max-width: 30em;
-  }
-
   .cta-row {
     display: flex;
     gap: 14px;
@@ -387,7 +448,14 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     border-radius: 10px;
     background: color-mix(in oklab, var(--primary) 70%, black 8%);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-    width: 250px;
+    width: 260px;
+  }
+
+  .portrait-frame :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
   }
 
   .section {
@@ -422,84 +490,27 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     margin: 6px 0 0;
   }
 
-  .lead-line {
-    font-size: clamp(22px, 3vw, 30px);
-    line-height: 1.35;
-    color: var(--ink);
-    margin: 0 0 26px;
-    font-weight: 500;
-    text-wrap: pretty;
-  }
-
-  .two-col {
-    columns: 1;
-    column-gap: 44px;
+  .who-body {
     font-size: 17px;
     line-height: 1.62;
     color: var(--ink);
   }
 
-  @media (min-width: 680px) {
-    .two-col {
-      columns: 2;
-    }
+  .who-body p {
+    margin: 0 0 18px;
+    max-width: 40em;
   }
 
-  .two-col p {
-    margin: 0 0 16px;
-    break-inside: avoid;
+  .who-body p:last-child {
+    margin-bottom: 0;
   }
 
-  .desk-row {
-    display: flex;
-    align-items: center;
-    gap: 44px;
-    flex-wrap: wrap;
-    padding-block: 44px;
-  }
-
-  .desk-label {
-    flex: none;
-    margin: 0;
-  }
-
-  .bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 9px;
-    height: 104px;
-    flex-wrap: wrap;
-  }
-
-  .bar-item {
-    width: 34px;
-    border-radius: 3px 3px 0 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .bar-item span {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 9.5px;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  .bar-item span.dark {
-    color: var(--primary);
-  }
-
-  .desk-note {
-    font-size: 16px;
-    font-style: italic;
-    color: var(--muted);
-    margin: 0;
-    flex: 1;
-    min-width: 200px;
+  .lead-line {
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.35;
+    color: var(--ink);
+    font-weight: 500;
+    text-wrap: pretty;
   }
 
   .debate-grid {
@@ -532,8 +543,8 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
   .kpi-text {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 34px;
-    line-height: 0.9;
+    font-size: 30px;
+    line-height: 0.95;
     color: var(--primary);
   }
 
@@ -594,12 +605,49 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     padding-left: 8px;
   }
 
-  .debate-footnote {
-    margin: 28px 0 0;
-    font-size: 15.5px;
+  /* enlarged per Ian's note — these bullets are the substance of the role */
+  .debate-bullets {
+    margin: 34px 0 0;
+    padding-left: 22px;
+    max-width: 60em;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .debate-bullets li {
+    font-size: 18px;
     line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .debate-bullets li::marker {
+    color: var(--accent);
+  }
+
+  .section-photo {
+    margin: 0 0 34px;
+  }
+
+  .section-photo :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+  }
+
+  .section-photo.center {
+    max-width: 380px;
+    margin-inline: auto;
+  }
+
+  .section-photo figcaption {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
     color: var(--muted);
-    max-width: 62em;
+    margin-top: 10px;
+    text-align: center;
   }
 
   .research-grid {
@@ -649,11 +697,22 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     margin: 0;
   }
 
-  .research-body {
+  .card-bullets {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-bullets li {
     font-size: 15px;
     line-height: 1.55;
     color: var(--ink);
-    margin: 0;
+  }
+
+  .card-bullets li::marker {
+    color: var(--accent);
   }
 
   .campaign-grid {
@@ -673,6 +732,8 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     border-radius: 10px;
     padding: 22px;
     background: var(--cream2);
+    display: flex;
+    flex-direction: column;
   }
 
   .campaign-head {
@@ -707,18 +768,28 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     margin: 8px 0 10px;
   }
 
-  .campaign-body {
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--ink);
-    margin: 0;
-  }
-
   .stage-photos {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-bottom: 26px;
+  }
+
+  .stage-cell {
+    height: clamp(240px, 40vw, 320px);
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+  }
+
+  .stage-cell.tall {
+    height: clamp(280px, 48vw, 380px);
+  }
+
+  .stage-cell :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .stage-body {
@@ -729,28 +800,49 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     max-width: 62em;
   }
 
-  .production-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 14px;
+  .roles-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 20px;
+    margin: 0 0 22px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .roles-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  }
+
+  .roles-list li:last-child {
+    border-bottom: 0;
+  }
+
+  .role-name {
+    font-size: 16px;
+    color: var(--ink);
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .role-name strong {
+    color: var(--oxblood);
+    font-weight: 700;
+  }
+
+  .role-show {
+    font-size: 16px;
+    color: var(--ink);
+  }
+
+  .role-season {
     font-family: var(--font-display);
     font-size: 12px;
-    letter-spacing: 0.03em;
     color: var(--muted);
-  }
-
-  .production-list li::before {
-    content: '·';
-    margin-right: 12px;
-    color: var(--accent);
-  }
-
-  .production-list li:first-child::before {
-    content: '';
-    margin-right: 0;
+    white-space: nowrap;
   }
 
   .stage-link {
@@ -761,29 +853,50 @@ const productions = ['The Laramie Project', 'Mean Girls', 'The Importance of Bei
     color: var(--oxblood);
   }
 
-  .pinned-wrap {
-    background: var(--primary);
-    padding: 60px 24px;
-    display: flex;
-    justify-content: center;
+  .basketball-body {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0 0 26px;
+    max-width: 48em;
   }
 
-  .pinned-note {
-    transform: rotate(-1.6deg);
-    background: var(--cream2);
-    border-radius: 3px;
-    padding: 26px 30px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.32);
-    max-width: 440px;
+  .basketball-photos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .pinned-note p {
-    font-family: var(--font-hand);
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 1.3;
-    color: var(--oxblood);
+  @media (min-width: 640px) {
+    .basketball-photos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .bball-figure {
     margin: 0;
+  }
+
+  .bball-cell {
+    height: 360px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+    background: color-mix(in oklab, var(--ink) 6%, var(--cream2));
+  }
+
+  .bball-cell :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .bball-figure figcaption {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    margin-top: 10px;
   }
 
   .contact {

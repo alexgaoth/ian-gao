@@ -5,23 +5,6 @@ site itself) is done and verified — see the build notes at the bottom. This do
 to be carried out by you (or Ian), not by the coding agent, since it involves account access, DNS, and domain
 ownership.
 
----
-
-## 1. Push the code to a git repo
-
-Cloudflare Pages deploys from a git repo, so this needs to exist before step 2.
-
-```bash
-cd /home/alexgaoth/Documents/ian-gao
-git add -A
-git commit -m "Build first version of ian-gao.com"
-```
-
-Then create a GitHub (or GitLab) repo and push to it. If you want a hand with this part, ask — it wasn't done
-automatically since it's the first push of a new remote.
-
----
-
 ## 2. Cloudflare Pages
 
 1. Cloudflare dashboard → **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**.

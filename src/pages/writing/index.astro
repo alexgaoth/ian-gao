@@ -24,11 +24,7 @@ const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.
     <div class="wrap">
       {posts.length === 0 ? (
         <div class="empty-state">
-          <p>
-            Nothing published here yet — the first essays are in progress. In the meantime, the{' '}
-            <a href="/#debate">debate record</a> and <a href="/#research">research</a> are the best sense of how
-            Ian argues a case.
-          </p>
+          <p>Nothing published here yet — the first essays are in progress.</p>
         </div>
       ) : (
         <div class="post-list">
