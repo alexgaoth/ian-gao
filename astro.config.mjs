@@ -9,5 +9,5 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'ignore',
   integrations: [mdx(), sitemap()],
-  adapter: cloudflare(),
+  adapter: cloudflare({ imageService: 'compile' }),
 });
