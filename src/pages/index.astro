@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Ticker from '../components/Ticker.astro';
-import ImagePlaceholder from '../components/ImagePlaceholder.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '../lib/site';
 import { personSchema } from '../lib/schema';
@@ -12,7 +11,6 @@ import stage1 from '../assets/ian-stage-1.png';
 import stage2 from '../assets/ian-stage-2.jpg';
 import ucsbPhoto from '../assets/ian-ucsb-research.png';
 import mahanPhoto from '../assets/ian-mahan-campaign.png';
-import lebronPhoto from '../assets/ian-lebron.png';
 
 const tickerItems = ['LeBron is the GOAT'];
 
@@ -311,34 +309,8 @@ const roles = [
     </div>
   </section>
 
-  <!-- BASKETBALL -->
-  <section id="basketball" class="section bg-cream3">
-    <div class="wrap">
-      <div class="section-heading">
-        <h2>Basketball</h2>
-        <span class="tag">OFF THE CLOCK</span>
-      </div>
-      <p class="basketball-body">
-        Despite being pretty mediocre at it, I love playing basketball with my brother and my friends — and watching
-        the NBA. LeBron is the GOAT.
-      </p>
-      <div class="basketball-photos">
-        <figure class="bball-figure">
-          <ImagePlaceholder label="Me dunking" height="360px" radius="10px" />
-          <figcaption>Here's a picture of me dunking! (On an 8-foot rim, in fairness.)</figcaption>
-        </figure>
-        <figure class="bball-figure">
-          <div class="bball-cell">
-            <Image src={lebronPhoto} alt="Ian taking a selfie at an NBA game with LeBron James on the court behind him" widths={[360, 720]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" />
-          </div>
-          <figcaption>A selfie I took with LeBron — you can see him smiling ear to ear.</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
   <!-- CONTACT -->
-  <section id="contact" class="section bg-cream contact">
+  <section id="contact" class="section bg-cream3 contact">
     <div class="wrap">
       <h2>Get in touch</h2>
       <p class="contact-body">The best way to reach me is a short email!</p>
@@ -793,10 +765,6 @@ const roles = [
     border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
   }
 
-  .stage-cell.tall {
-    height: clamp(280px, 48vw, 380px);
-  }
-
   .stage-cell :global(img) {
     width: 100%;
     height: 100%;
@@ -862,52 +830,6 @@ const roles = [
     font-size: 13px;
     letter-spacing: 0.03em;
     color: var(--oxblood);
-  }
-
-  .basketball-body {
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--ink);
-    margin: 0 0 26px;
-    max-width: 48em;
-  }
-
-  .basketball-photos {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  @media (min-width: 640px) {
-    .basketball-photos {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .bball-figure {
-    margin: 0;
-  }
-
-  .bball-cell {
-    height: 360px;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
-    background: color-mix(in oklab, var(--ink) 6%, var(--cream2));
-  }
-
-  .bball-cell :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .bball-figure figcaption {
-    font-family: var(--font-display);
-    font-size: 12.5px;
-    letter-spacing: 0.02em;
-    color: var(--muted);
-    margin-top: 10px;
   }
 
   .contact {
