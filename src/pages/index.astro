@@ -1,29 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Ticker from '../components/Ticker.astro';
 import { Image } from 'astro:assets';
 import { SITE } from '../lib/site';
 import { personSchema } from '../lib/schema';
+import { beliefs } from '../data/beliefs';
 
 import portrait from '../assets/ian-portrait.jpg';
 import natsPhoto from '../assets/ian-nationals.jpg';
-import stage1 from '../assets/ian-stage-1.png';
-import stage2 from '../assets/ian-stage-2.jpg';
+// These two are "Ian talking on stage" / "Ian on stage 2" — speech-and-debate photos.
+// Moved out of Theatre and into Speech and Debate per Ian's 7/27 notes.
+import speaking1 from '../assets/ian-stage-2.jpg';
+import speaking2 from '../assets/ian-stage-1.png';
 import ucsbPhoto from '../assets/ian-ucsb-research.png';
 import mahanPhoto from '../assets/ian-mahan-campaign.png';
-
-const tickerItems = ['LeBron is the GOAT'];
+// "Ian with Mahan(need editing).jpg" from Ian's photo set — he flagged it as needing a crop.
+import mahanWithIan from '../assets/gallery/gallery-03.jpg';
 
 const debateResults = [
-  { event: 'NSDA Nationals, LD', result: '19th in the Nation', year: '2026' },
+  { event: 'NSDA Nationals, LD', result: '19th in the nation', year: '2026' },
   { event: 'CA State Championships, LD', result: 'Top 30', year: '2026' },
   { event: 'Philhistorian Invitational, Open LD', result: 'Champion', year: '2024' },
-  { event: 'NSDA Last Chance Qualifier, Open LD', result: 'First Seed, Undefeated', year: '2025 & 2026' },
+  { event: 'NSDA Last Chance Qualifier, Open LD', result: 'First seed, undefeated', year: '2025 & 2026' },
   { event: 'Stephen Stewart Invitational, Open LD', result: 'Quarterfinals', year: '2025' },
 ];
 
 const debateBullets = [
-  'I lead a nationally competitive team of 200 students — ranked 10th in the nation, the best public-school program in our district and among the top in California — competing at regional and national tournaments.',
+  // Ranking figures deliberately left to the intro paragraph rather than repeated here; see round-2 submission.
+  'I lead a nationally competitive team of 200 students, taking them to regional and national tournaments as the best public-school program in our district.',
   'I manage registration and communication for all judges, coaches, and tournaments, and oversee our ~20-person student leadership team of VPs and Chairs, heading biweekly leadership meetings and holding the team accountable.',
   'I headed and executed a complete overhaul of the team — restructuring from 2 to 5 periods, building a tailored roster by event, and facilitating the transition to a new head coach.',
   'As Captain of LD this past year, I wrote lesson plans and assignments for weekly meetings, mentored novice debaters, and led bimonthly topic-research sessions on issues like plea bargaining, the living wage, military intervention, and artificial general intelligence for my team of 20 debaters.',
@@ -36,6 +39,7 @@ const research = [
     mentor: 'Mentored by Oxford Professor Dr. Othon Anastasakis',
     points: [
       'Authored a 15,000-word original research paper, “Bosnia and Herzegovina and the Limits of International State-Building: How Stable Is the Post-Dayton Order?”',
+      'Analyzed the impact of the Dayton Peace Agreement on Bosnia and Herzegovina’s political institutions, with a focus on ethnic power-sharing, governance, and democratic stability.',
       'Presented twice at the CCIR Research Symposium.',
     ],
   },
@@ -67,7 +71,7 @@ const campaigns = [
     dates: 'Feb 2026 – Jun 2026',
     points: [
       'Led weekly phone-banking sessions with 20+ volunteers, training them to reach tens of thousands of voters.',
-      'Boosted voter turnout by helping organize town halls, GOTV rallies, meet-and-greets, and an election watch party across the Bay Area.',
+      'Helped organize town halls, GOTV rallies, meet-and-greets, and an election watch party across the Bay Area.',
       'Ran voter outreach — recruiting and managing volunteers for canvassing and literature drops across thousands of homes.',
     ],
   },
@@ -82,120 +86,148 @@ const campaigns = [
   },
 ];
 
-const roles = [
-  { lead: 'Greg Pierotti, Rulon Stacey', rest: 'Aaron McKinney, Shadow & The Bailiff', show: 'The Laramie Project', season: 'Winter 2023' },
-  { rest: 'Kevin G / Ensemble', show: 'Mean Girls', season: 'Spring 2024' },
-  { lead: 'Algernon Moncrieff', show: 'The Importance of Being Earnest', season: 'Winter 2024' },
-  { rest: 'Sky', show: 'Mamma Mia', season: 'Spring 2025' },
-  { rest: 'Set Crew Lead', show: 'Chicago', season: 'Winter 2025' },
-  { lead: 'Colonel Mustard', show: 'Clue: On Stage', season: 'Spring 2026' },
+/*
+  `photo` is the drop-in slot for Ian's `ian theater 1`–`6` files, which are in his Drive but not
+  yet on this machine. To fill one in: `import earnest from '../assets/theatre/earnest.jpg'` and
+  set `photo: earnest`. The row layout already reserves the column — no CSS change needed.
+*/
+interface Production {
+  show: string;
+  season: string;
+  role: string;
+  supporting?: string;
+  lead: boolean;
+  photo?: ImageMetadata;
+}
+
+const productions: Production[] = [
+  { show: 'Clue: On Stage', season: 'Spring 2026', role: 'Colonel Mustard', lead: true },
+  { show: 'Chicago', season: 'Winter 2025', role: 'Set Crew Lead', lead: false },
+  { show: 'Mamma Mia', season: 'Spring 2025', role: 'Sky', lead: false },
+  { show: 'The Importance of Being Earnest', season: 'Winter 2024', role: 'Algernon Moncrieff', lead: true },
+  { show: 'Mean Girls', season: 'Spring 2024', role: 'Kevin G / Ensemble', lead: false },
+  {
+    show: 'The Laramie Project',
+    season: 'Winter 2023',
+    role: 'Greg Pierotti, Rulon Stacey',
+    supporting: 'Aaron McKinney, Shadow & The Bailiff',
+    lead: true,
+  },
 ];
 ---
 
 <Layout
   title="Ian Gao"
-  description="Ian Gao — senior at Leland High School. President of Leland Speech and Debate, ranked 19th nationally in LD. Research in history, policy analysis, and philosophy. Political campaigns, Leland theatre, essays."
+  description="The personal site of Ian Gao, a senior at Leland High School in San Jose — debate, research in policy and philosophy, campaign work, theatre, and writing."
   homepage
   structuredData={personSchema()}
 >
-  <!-- HERO -->
-  <header id="top" class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <p class="eyebrow accent-text">THE STUDY OF</p>
+  <!-- HERO — ticker, "THE STUDY OF" eyebrow and both buttons removed per Ian's 7/27 notes -->
+  <header class="hero">
+    <div class="wrap-wide hero-inner">
+      <div class="hero-text">
         <h1>Ian Gao</h1>
-        <p class="tagline">philosophy&#8202;·&#8202;politics&#8202;·&#8202;policy</p>
-        <div class="cta-row">
-          <a href="/writing/" class="btn btn-accent">Read the writing →</a>
-          <a href="/#debate" class="btn btn-outline">The record</a>
-        </div>
+        <p class="hero-tagline">philosophy · politics · policy</p>
       </div>
-      <div class="portrait-frame">
-        <Image
-          src={portrait}
-          alt="Ian Gao, senior at Leland High School"
-          width={520}
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
+      <Image
+        class="hero-photo"
+        src={portrait}
+        alt="Ian Gao"
+        widths={[280, 560]}
+        sizes="clamp(240px, 24vw, 280px)"
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
   </header>
 
-  <Ticker items={tickerItems} />
-
   <!-- WHO I AM -->
-  <section class="section bg-cream">
-    <div class="wrap who-grid">
-      <div><p class="eyebrow oxblood-text">WHO I AM</p></div>
-      <div class="who-body">
-        <p class="lead-line">
-          Hi! I'm Ian Gao, a senior at Leland High School and a student researcher at UC Santa Barbara in policy
-          analysis and UC Santa Cruz in philosophy.
-        </p>
-        <p>
-          I'm also the President of Debate at Leland Speech and Debate, a program of 200+ students ranked third in
-          California and tenth in the nation. This summer I competed at the 2026 National Speech and Debate
-          Tournament, where I placed 19th in the nation in Lincoln-Douglas Debate.
-        </p>
-        <p>
-          Outside of research and debate, I enjoy acting as a cast member in Leland Theatre, interning for political
-          campaigns I believe in, increasing civic engagement among young people through courtwatching, playing
-          basketball, and learning a few songs on the guitar!
-        </p>
-      </div>
+  <section class="section">
+    <div class="wrap">
+      <h2 class="sr-only">About me</h2>
+      {/* Verbatim from Ian's "changes 7/27" bio. Do not paraphrase without asking him. */}
+      <p class="lede">Hi! I'm Ian Gao, a senior at Leland High School.</p>
+      <p>
+        I'm the President of Debate at Leland Speech and Debate, a program of 200+ students ranked third in
+        California and tenth in the nation. This summer I competed at the 2026 National Speech and Debate
+        Tournament, where I placed 19th in the nation in Lincoln-Douglas Debate.
+      </p>
+      <p>
+        I'm also a student researcher at UC Santa Barbara in policy analysis, where I evaluated the effects of the
+        Collaborative Reform initiative on Use-of-Force Incidents in San Francisco, and at UC Santa Cruz in
+        philosophy, where I closely annotated contemporary philosophers on the many theories of love, contributing
+        to my mentor's doctoral thesis.
+      </p>
+      <p>
+        Outside of research and debate, I enjoy acting as a cast member in Leland Theatre, interning for political
+        campaigns I believe in, increasing civic engagement among young people through courtwatching, playing
+        basketball, and learning a few songs on the guitar!
+      </p>
     </div>
   </section>
 
-  <!-- DEBATE -->
-  <section id="debate" class="section bg-cream3">
+  {beliefs.length > 0 && (
+    <section id="beliefs" class="section">
+      <div class="wrap">
+        <h2>What I believe</h2>
+        <div class="beliefs">
+          {beliefs.map((b) => (
+            <div class="belief">
+              <p class="belief-claim">{b.claim}</p>
+              {b.body && <p class="belief-body">{b.body}</p>}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- SPEECH AND DEBATE -->
+  <section id="debate" class="section">
     <div class="wrap">
-      <div class="section-heading">
-        <h2>Speech and Debate</h2>
-        <span class="tag">LD · POLICY · DUO · EXTEMP</span>
+      <h2>Speech and Debate</h2>
+      <p>
+        I compete in Lincoln-Douglas and Policy Debate, Duo Interpretation, and Extemporaneous Speaking. This past
+        year I was Captain of Lincoln-Douglas; I'm now President of Debate at Leland Speech and Debate.
+      </p>
+
+      <div class="photo-pair">
+        <figure>
+          <Image src={speaking1} alt="Ian speaking at a podium on stage" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        </figure>
+        <figure>
+          <Image src={speaking2} alt="Ian speaking on stage, gesturing mid-sentence" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        </figure>
       </div>
-      <figure class="section-photo center">
-        <Image
-          src={natsPhoto}
-          alt="Ian holding his award at the 2026 NSDA National Speech and Debate Tournament"
-          widths={[380, 760]}
-          sizes="(min-width: 640px) 380px, 90vw"
-          loading="lazy"
-        />
-        <figcaption>At the 2026 NSDA National Tournament.</figcaption>
+
+      <h3 class="sub">Results</h3>
+      <table class="results">
+        <thead>
+          <tr>
+            <th scope="col">Tournament</th>
+            <th scope="col">Result</th>
+            <th scope="col">Year</th>
+          </tr>
+        </thead>
+        <tbody>
+          {debateResults.map((r) => (
+            <tr>
+              <td>{r.event}</td>
+              <td>{r.result}</td>
+              <td class="yr">{r.year}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <figure class="photo-single">
+        <Image src={natsPhoto} alt="Ian at the 2026 NSDA National Speech and Debate Tournament" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        <figcaption class="meta">At the 2026 NSDA National Tournament.</figcaption>
       </figure>
-      <div class="debate-grid">
-        <div class="stat-card">
-          <span class="kpi oxblood-text">19th</span>
-          <p class="stat-label">IN THE NATION, LD (NSDA 2026)</p>
-        </div>
-        <div class="stat-card">
-          <span class="kpi-text">President of Debate</span>
-          <p class="stat-label">LELAND SPEECH &amp; DEBATE</p>
-        </div>
-        <div class="results-card">
-          <div class="results-head">DEBATE RESULTS</div>
-          <table>
-            <thead class="sr-only">
-              <tr>
-                <th scope="col">Tournament</th>
-                <th scope="col">Result</th>
-                <th scope="col">Year</th>
-              </tr>
-            </thead>
-            <tbody>
-              {debateResults.map((r) => (
-                <tr>
-                  <td>{r.event}</td>
-                  <td class="result">{r.result}</td>
-                  <td class="year">{r.year}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <ul class="debate-bullets">
+
+      <h3 class="sub">What the job actually involves</h3>
+      <!-- enlarged per Ian's open doc comment ("I want this to be bigger") -->
+      <ul class="plain-list big">
         {debateBullets.map((b) => (
           <li>{b}</li>
         ))}
@@ -204,658 +236,336 @@ const roles = [
   </section>
 
   <!-- RESEARCH -->
-  <section id="research" class="section bg-cream">
+  <section id="research" class="section">
     <div class="wrap">
-      <div class="section-heading">
-        <h2>Research</h2>
-        <span class="tag">HISTORY · POLICY · PHILOSOPHY</span>
-      </div>
-      <figure class="section-photo center">
-        <Image
-          src={ucsbPhoto}
-          alt="Ian presenting a regression analysis of SFPD use-of-force data at UC Santa Barbara"
-          widths={[380, 760]}
-          sizes="(min-width: 640px) 380px, 90vw"
-          loading="lazy"
-        />
-        <figcaption>Presenting our SFPD use-of-force analysis at UC Santa Barbara.</figcaption>
+      <h2>Research</h2>
+      {research.map((r) => (
+        <div class="entry">
+          <h3>{r.org}</h3>
+          <p class="meta entry-meta">{r.tag} · {r.mentor}</p>
+          <ul class="plain-list">
+            {r.points.map((p) => (
+              <li>{p}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <figure class="photo-single">
+        <Image src={ucsbPhoto} alt="Ian presenting an analysis of SFPD use-of-force data at UC Santa Barbara" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        <figcaption class="meta">Presenting our SFPD use-of-force analysis at UC Santa Barbara.</figcaption>
       </figure>
-      <div class="research-grid">
-        {research.map((r) => (
-          <div class="research-card">
-            <p class="research-tag">{r.tag}</p>
-            <h3>{r.org}</h3>
-            <p class="research-mentor">{r.mentor}</p>
-            <ul class="card-bullets">
-              {r.points.map((p) => (
-                <li>{p}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
     </div>
   </section>
 
   <!-- CAMPAIGNING -->
-  <section id="campaigning" class="section bg-cream3">
+  <section id="campaigning" class="section">
     <div class="wrap">
-      <div class="section-heading">
-        <h2>Campaigning</h2>
-        <span class="tag">CALIFORNIA CAMPAIGNS</span>
-      </div>
-      <figure class="section-photo">
-        <Image
-          src={mahanPhoto}
-          alt="Ian on the Matt Mahan for Governor campaign"
-          widths={[600, 1000, 1400]}
-          sizes="(min-width: 1080px) 1000px, 100vw"
-          loading="lazy"
-        />
-        <figcaption>On the Matt Mahan for Governor campaign.</figcaption>
-      </figure>
-      <div class="campaign-grid">
-        {campaigns.map((c) => (
-          <div class="campaign-card">
-            <div class="campaign-head">
-              <h3>{c.name}</h3>
-              <span class="campaign-dates">{c.dates}</span>
-            </div>
-            <p class="campaign-role">{c.role}</p>
-            <ul class="card-bullets">
-              {c.points.map((p) => (
-                <li>{p}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <h2>Campaigning</h2>
+      {campaigns.map((c) => (
+        <div class="entry">
+          <h3>{c.name}</h3>
+          <p class="meta entry-meta">{c.role} · {c.dates}</p>
+          <ul class="plain-list">
+            {c.points.map((p) => (
+              <li>{p}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      {/* "fitting and adjusting it with the photo already there" — the two have very different
+          aspect ratios, so the pair is height-matched and cropped to centre rather than ragged. */}
+      <div class="photo-pair even">
+        <figure>
+          <Image src={mahanPhoto} alt="Ian on the Matt Mahan for Governor campaign" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        </figure>
+        <figure>
+          <Image src={mahanWithIan} alt="Ian with Matt Mahan and fellow campaign volunteers" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- STAGE -->
-  <section id="stage" class="section bg-cream">
+  <!-- THEATRE -->
+  <section id="theatre" class="section">
     <div class="wrap">
-      <div class="section-heading">
-        <h2>On Stage</h2>
-        <span class="tag">LELAND THEATRE</span>
-      </div>
-      <div class="stage-photos">
-        <div class="stage-cell">
-          <Image src={stage1} alt="Ian performing on stage with Leland Theatre" widths={[320, 640]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" />
-        </div>
-        <div class="stage-cell">
-          <Image src={stage2} alt="Ian delivering a scene on stage with Leland Theatre" widths={[320, 640]} sizes="(min-width: 640px) 50vw, 100vw" loading="lazy" />
-        </div>
-      </div>
-      <p class="stage-body">
-        Six productions with Leland Theatre since 2023 — <em>The Laramie Project</em>, <em>Mean Girls</em>,{' '}
-        <em>The Importance of Being Earnest</em>, <em>Mamma Mia</em>, <em>Chicago</em>, and <em>Clue</em>.
-      </p>
-      <ul class="roles-list">
-        {roles.map((r) => (
+      <h2>Theatre</h2>
+      <p>I've been part of six productions with Leland Theatre since 2023.</p>
+      <ol class="productions">
+        {productions.map((p) => (
           <li>
-            <span class="role-name">
-              {r.lead && <strong>{r.lead}</strong>}
-              {r.lead && r.rest ? ', ' : ''}
-              {r.rest}
-            </span>
-            <span class="role-show"><em>{r.show}</em></span>
-            <span class="role-season">{r.season}</span>
+            {p.photo && (
+              <Image class="prod-photo" src={p.photo} alt={`Ian as ${p.role} in ${p.show}`} widths={[120, 240]} sizes="120px" loading="lazy" />
+            )}
+            <div class="prod-text">
+              <div class="prod-head">
+                <h3 class="prod-show"><em>{p.show}</em></h3>
+                <span class="meta prod-season">{p.season}</span>
+              </div>
+              <p class="prod-role">
+                {p.lead ? <strong>{p.role}</strong> : p.role}
+                {p.supporting && <span class="prod-supporting"> · also {p.supporting}</span>}
+              </p>
+            </div>
           </li>
         ))}
-      </ul>
-      <a href="https://youtu.be/_pUo7QA8DPk" class="stage-link" rel="noopener">Watch some of my scenes! ↗</a>
+      </ol>
+      <p><a href="https://youtu.be/_pUo7QA8DPk" rel="noopener">Watch some of my scenes! ↗</a></p>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="section bg-cream3 contact">
+  <section id="contact" class="section">
     <div class="wrap">
       <h2>Get in touch</h2>
-      <p class="contact-body">The best way to reach me is a short email!</p>
-      <div class="contact-row">
-        <a href={`mailto:${SITE.email}`} class="btn btn-primary">✉&#8202;&#8202; Email me</a>
-      </div>
+      <p>
+        The best way to reach me is a short email! — <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </p>
     </div>
   </section>
 </Layout>
 
 <style>
   .hero {
-    background: var(--primary);
-    color: var(--on-primary);
-    position: relative;
-    overflow: hidden;
+    padding-block: clamp(34px, 6vw, 60px);
   }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(900px 500px at 78% -10%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%);
-    pointer-events: none;
-  }
-
-  .hero-grid {
-    padding-block: 60px 70px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    align-items: center;
-    position: relative;
-  }
-
-  @media (min-width: 860px) {
-    .hero-grid {
-      grid-template-columns: 1.55fr 1fr;
-      padding-block: 76px 84px;
-    }
-  }
-
-  .accent-text {
-    color: var(--accent);
-    margin: 0 0 22px;
-  }
-
-  .hero h1 {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: clamp(46px, 9vw, 82px);
-    line-height: 0.9;
-    letter-spacing: -0.03em;
-    color: var(--on-primary);
-    margin: 0;
-  }
-
-  .tagline {
-    font-size: 20px;
-    font-style: italic;
-    color: var(--on-primary-soft);
-    margin: 18px 0 0;
-  }
-
-  .cta-row {
+  .hero-inner {
     display: flex;
-    gap: 14px;
-    margin-top: 32px;
+    align-items: center;
+    gap: 28px;
     flex-wrap: wrap;
   }
 
-  .btn {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    padding: 13px 22px;
-    border-radius: 7px;
-    display: inline-block;
+  .hero-text {
+    flex: 1;
+    min-width: 220px;
   }
 
-  .btn-accent {
-    color: var(--primary);
-    background: var(--accent);
+  h1 {
+    font-size: clamp(38px, 7vw, 58px);
+    line-height: 1.05;
+    margin: 0;
   }
 
-  .btn-accent:hover {
-    filter: brightness(1.06);
-    color: var(--primary);
+  .hero-tagline {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 19px;
+    margin: 10px 0 0;
   }
 
-  .btn-outline {
-    color: var(--on-primary);
-    border: 1px solid var(--on-primary-soft);
-  }
-
-  .btn-outline:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .btn-primary {
-    color: var(--on-primary);
-    background: var(--primary);
-    font-size: 14px;
-    padding: 15px 28px;
-  }
-
-  .btn-primary:hover {
-    filter: brightness(1.1);
-    color: var(--on-primary);
-  }
-
-  .portrait-frame {
-    justify-self: center;
-    padding: 10px;
-    border: 1px solid var(--primary-tint);
-    border-radius: 10px;
-    background: color-mix(in oklab, var(--primary) 70%, black 8%);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-    width: 260px;
-  }
-
-  .portrait-frame :global(img) {
-    display: block;
-    width: 100%;
+  /* Enlarged per Ian's "Enlarge profile pic/take a different one" note. The photo swap to
+     "ian main picture" is still blocked on that file. */
+  .hero :global(.hero-photo) {
+    width: clamp(240px, 24vw, 280px);
     height: auto;
-    border-radius: 6px;
+    border-radius: 3px;
   }
 
-  .section {
-    padding-block: clamp(50px, 8vw, 82px);
-  }
-
-  .bg-cream {
-    background: var(--cream);
-  }
-
-  .bg-cream3 {
-    background: var(--cream3);
-    border-top: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
-    border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
-  }
-
-  .who-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  @media (min-width: 780px) {
-    .who-grid {
-      grid-template-columns: 220px 1fr;
-      gap: 56px;
-    }
-  }
-
-  .oxblood-text {
-    color: var(--oxblood);
-    margin: 6px 0 0;
-  }
-
-  .who-body {
+  .sub {
+    margin: 32px 0 12px;
     font-size: 17px;
-    line-height: 1.62;
-    color: var(--ink);
+    color: var(--muted);
+    font-weight: 600;
   }
 
-  .who-body p {
-    margin: 0 0 18px;
-    max-width: 40em;
+  .entry {
+    margin-bottom: 30px;
   }
 
-  .who-body p:last-child {
+  .entry:last-of-type {
     margin-bottom: 0;
   }
 
-  .lead-line {
-    font-size: clamp(22px, 3vw, 30px);
-    line-height: 1.35;
-    color: var(--ink);
-    font-weight: 500;
-    text-wrap: pretty;
+  .entry-meta {
+    margin: 4px 0 10px;
   }
 
-  .debate-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    align-items: stretch;
+  /* Ian asked for these to be bigger; a literal 2× (36px) would outshout the section headings,
+     so they sit unmistakably above the 18px body and the 20px lede, but below the h2. */
+  .plain-list.big li {
+    font-size: 24px;
+    line-height: 1.5;
   }
 
-  @media (min-width: 780px) {
-    .debate-grid {
-      grid-template-columns: 1fr 1fr 1.4fr;
-    }
-  }
-
-  .stat-card {
-    border: 1px solid var(--accent);
-    border-radius: 10px;
-    padding: 22px;
-    background: var(--cream2);
-  }
-
-  .kpi {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: 52px;
-    line-height: 0.85;
-  }
-
-  .kpi-text {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 30px;
-    line-height: 0.95;
-    color: var(--primary);
-  }
-
-  .stat-label {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin: 12px 0 0;
-  }
-
-  .results-card {
-    border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
-    border-radius: 10px;
-    overflow: hidden;
-    background: var(--cream2);
-  }
-
-  .results-head {
-    background: var(--primary);
-    padding: 9px 16px;
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    color: var(--accent);
-  }
-
-  .results-card table {
+  .results {
     width: 100%;
     border-collapse: collapse;
-    font-family: var(--font-display);
-    font-size: 13px;
+    font-size: 16px;
   }
 
-  .results-card td {
-    padding: 9px 16px;
-    border-bottom: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
-    color: var(--ink);
+  .results th {
+    font-family: var(--font-meta);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-align: left;
+    padding: 0 10px 6px 0;
+    border-bottom: 1px solid var(--rule);
   }
 
-  .results-card tr:last-child td {
+  .results td {
+    padding: 9px 10px 9px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  .results tr:last-child td {
     border-bottom: 0;
   }
 
-  .result {
-    text-align: right;
-    color: var(--oxblood);
-    font-weight: 700;
-  }
-
-  .year {
-    text-align: right;
+  .results .yr {
+    font-family: var(--font-meta);
+    font-size: 13px;
     color: var(--muted);
-    font-size: 11px;
     white-space: nowrap;
-    padding-left: 8px;
+    padding-right: 0;
   }
 
-  /* enlarged per Ian's note — these bullets are the substance of the role */
-  .debate-bullets {
-    margin: 34px 0 0;
-    padding-left: 22px;
-    max-width: 60em;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .debate-bullets li {
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--ink);
-  }
-
-  .debate-bullets li::marker {
-    color: var(--accent);
-  }
-
-  .section-photo {
-    margin: 0 0 34px;
-  }
-
-  .section-photo :global(img) {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
-    border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
-  }
-
-  .section-photo.center {
-    max-width: 380px;
-    margin-inline: auto;
-  }
-
-  .section-photo figcaption {
-    font-family: var(--font-display);
-    font-size: 12.5px;
-    letter-spacing: 0.02em;
-    color: var(--muted);
-    margin-top: 10px;
-    text-align: center;
-  }
-
-  .research-grid {
+  .photo-pair {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 14px;
+    margin: 22px 0;
   }
 
-  @media (min-width: 780px) {
-    .research-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .research-card {
-    border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
-    border-radius: 10px;
-    padding: 22px;
-    background: var(--cream2);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .research-tag {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    color: var(--oxblood);
-    margin: 0;
-    text-transform: uppercase;
-  }
-
-  .research-card h3 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 17px;
-    color: var(--primary);
-    margin: 0;
-  }
-
-  .research-mentor {
-    font-size: 13.5px;
-    font-style: italic;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  .card-bullets {
-    margin: 6px 0 0;
-    padding-left: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .card-bullets li {
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--ink);
-  }
-
-  .card-bullets li::marker {
-    color: var(--accent);
-  }
-
-  .campaign-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  @media (min-width: 700px) {
-    .campaign-grid {
+  @media (min-width: 560px) {
+    .photo-pair {
       grid-template-columns: 1fr 1fr;
     }
   }
 
-  .campaign-card {
-    border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
-    border-radius: 10px;
-    padding: 22px;
-    background: var(--cream2);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .campaign-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .campaign-head h3 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 17px;
-    color: var(--primary);
+  .photo-pair figure {
     margin: 0;
   }
 
-  .campaign-dates {
-    font-family: var(--font-display);
-    font-size: 11px;
-    color: var(--muted);
+  .photo-pair.even :global(img) {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .photo-pair :global(img),
+  .photo-single :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+  }
+
+  .photo-single {
+    margin: 24px 0 0;
+    max-width: 340px;
+  }
+
+  .photo-single figcaption {
+    margin-top: 7px;
+  }
+
+  .productions {
+    list-style: none;
+    margin: 22px 0;
+    padding: 0;
+  }
+
+  /* Grid, not flex: the 120px photo column is reserved on every row, so rows stay aligned
+     whether or not a given production has a photo yet. Ian's `ian theater 1`-`6` can land one
+     at a time without the list going ragged. Column collapses to 0 only if no row has a photo. */
+  .productions {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 16px;
+  }
+
+  .productions li {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    align-items: start;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .prod-text {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  /* Subgrid is Baseline (Sept 2023) but degrades to a ragged auto track without this. */
+  @supports not (grid-template-columns: subgrid) {
+    .productions {
+      display: block;
+    }
+
+    .productions li {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .prod-text {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+
+  .productions :global(.prod-photo) {
+    grid-column: 1;
+    width: 120px;
+    height: auto;
+    border-radius: 3px;
+  }
+
+  .productions li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .prod-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    flex-wrap: wrap;
+  }
+
+  .prod-show {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .prod-season {
     white-space: nowrap;
   }
 
-  .campaign-role {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    color: var(--oxblood);
-    margin: 8px 0 10px;
-  }
-
-  .stage-photos {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 26px;
-  }
-
-  .stage-cell {
-    height: clamp(240px, 40vw, 320px);
-    overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
-  }
-
-  .stage-cell :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .stage-body {
+  .prod-role {
+    margin: 3px 0 0;
     font-size: 17px;
-    line-height: 1.6;
-    color: var(--ink);
-    margin: 0 0 18px;
-    max-width: 62em;
+    color: var(--muted);
   }
 
-  .roles-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 22px;
+  .prod-role strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .prod-supporting {
+    font-size: 15px;
+  }
+
+  .beliefs {
     display: flex;
     flex-direction: column;
+    gap: 20px;
   }
 
-  .roles-list li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  .belief-claim {
+    font-size: 20px;
+    margin: 0 0 6px;
   }
 
-  .roles-list li:last-child {
-    border-bottom: 0;
-  }
-
-  .role-name {
-    font-size: 16px;
-    color: var(--ink);
-    flex: 1;
-    min-width: 200px;
-  }
-
-  .role-name strong {
-    color: var(--oxblood);
-    font-weight: 700;
-  }
-
-  .role-show {
-    font-size: 16px;
-    color: var(--ink);
-  }
-
-  .role-season {
-    font-family: var(--font-display);
-    font-size: 12px;
+  .belief-body {
+    margin: 0;
     color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .stage-link {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.03em;
-    color: var(--oxblood);
-  }
-
-  .contact {
-    text-align: center;
-  }
-
-  .contact h2 {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(32px, 5vw, 44px);
-    letter-spacing: -0.02em;
-    color: var(--primary);
-    margin: 0 0 14px;
-  }
-
-  .contact-body {
-    font-size: 19px;
-    color: var(--muted);
-    margin: 0 auto 30px;
-    max-width: 34em;
-  }
-
-  .contact-row {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
   }
 </style>

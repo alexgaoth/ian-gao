@@ -1,0 +1,15 @@
+<!--
+  Source for public/og-image.png. Committed so the social card can never silently drift from
+  the site's palette again — the previous card still showed the retired dark-teal-and-brass
+  design, with its retired eyebrow copy, long after that design was deleted from the site.
+
+  Regenerate with:
+    node -e "require('sharp')('src/og/og-card.svg').resize(1200,630).png().toFile('public/og-image.png')"
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fbfaf7" />
+  <rect x="0" y="0" width="1200" height="10" fill="#1e4a4d" />
+  <text x="90" y="300" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="96" fill="#221f1b">Ian Gao</text>
+  <text x="94" y="360" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="34" fill="#57524a">philosophy &#183; politics &#183; policy</text>
+  <text x="94" y="470" font-family="system-ui, sans-serif" font-size="24" fill="#57524a">ian-gao.com</text>
+</svg>

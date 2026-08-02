@@ -35,7 +35,7 @@ export function blogPostingSchema(opts: {
     '@type': 'BlogPosting',
     headline: opts.headline,
     description: opts.description,
-    url: `${SITE.url}/writing/${opts.slug}`,
+    url: `${SITE.url}/writing/${opts.slug}/`,
     datePublished: opts.datePublished.toISOString(),
     dateModified: (opts.dateModified ?? opts.datePublished).toISOString(),
     author: {

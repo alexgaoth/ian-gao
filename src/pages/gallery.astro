@@ -1,0 +1,117 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+
+import g01 from '../assets/gallery/gallery-01.jpg';
+import g02 from '../assets/gallery/gallery-02.jpg';
+import g03 from '../assets/gallery/gallery-03.jpg';
+import g04 from '../assets/gallery/gallery-04.jpg';
+import g10 from '../assets/gallery/gallery-10.jpg';
+
+/*
+  Captions are Ian's to write — he noted "I'll add small subtitles to each picture later".
+  `caption` is left empty on purpose rather than filled with invented text; the markup
+  renders the slot only when there is something to put in it.
+
+  `alt` is written from what is actually visible in each photo (required for accessibility),
+  and deliberately claims nothing beyond that.
+
+  Still missing from Drive: gallery 5, 6, 7, 8, 9, 11.
+*/
+const photos = [
+  { src: g10, alt: 'Ian in a suit and tie, photographed in a mirror', caption: '' },
+  { src: g03, alt: 'Ian with Matt Mahan and fellow campaign volunteers', caption: '' },
+  { src: g04, alt: 'Ian and a friend at an NBA game, with LeBron James circled far down on the court', caption: '' },
+  { src: g02, alt: 'A young child climbing on a large whale sculpture in a courtyard', caption: '' },
+  { src: g01, alt: 'Ian as a toddler in a blue cardigan', caption: '' },
+];
+---
+
+<Layout
+  title="Photos"
+  description="A few photos from Ian Gao's life outside of school — campaign work, family, and the occasional very distant celebrity sighting."
+>
+  <header class="page-head">
+    <div class="wrap">
+      <h1>Photos</h1>
+      <p class="lede">A few pictures, in no particular order.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap-wide">
+      <ul class="grid">
+        {photos.map((photo) => (
+          <li>
+            <figure>
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                widths={[320, 640, 900]}
+                sizes="(min-width: 900px) 320px, (min-width: 560px) 45vw, 90vw"
+                loading="lazy"
+              />
+              {photo.caption && <figcaption class="meta">{photo.caption}</figcaption>}
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-head {
+    padding-block: clamp(30px, 5vw, 46px) 0;
+  }
+
+  h1 {
+    font-size: clamp(30px, 5vw, 42px);
+    margin: 0 0 8px;
+  }
+
+  .page-head .lede {
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Masonry-style columns: keeps every photo uncropped and avoids ragged row bottoms. */
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 1;
+    column-gap: 20px;
+  }
+
+  @media (min-width: 560px) {
+    .grid {
+      columns: 2;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .grid {
+      columns: 3;
+    }
+  }
+
+  .grid li {
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  figure :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+  }
+
+  figcaption {
+    margin-top: 7px;
+  }
+</style>

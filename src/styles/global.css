@@ -1,24 +1,24 @@
-/* Deep Teal palette — baked from the design export's "Deep Teal" preset (h:196 c:52, accent #d8a24a) */
+/*
+  Restrained rewrite (Aug 2026) — per Ian's review: "I want the design to be a lot simpler",
+  "a bit more bland is okay with me", "trying really hard to be cool but failing → pretentious".
+  What changed: one typeface instead of three (dropped Archivo display weights and the Caveat
+  handwriting face), one accent colour instead of brass + oxblood, paper background instead of a
+  dark teal chrome, hairline rules instead of bordered cards. Contrast ratios verified ≥ 6.8:1.
+*/
 :root {
-  --primary: oklch(0.37 0.0468 196);
-  --primary-tint: oklch(0.47 0.0468 196);
-  --primary-d: oklch(0.31 0.0445 196);
-  --primary-dd: oklch(0.26 0.0421 196);
-  --accent: #dda852;
-  --oxblood: oklch(0.46 0.15 27);
-  --cream: oklch(0.928 0.021 82);
-  --cream2: oklch(0.955 0.026 84);
-  --cream3: oklch(0.892 0.024 80);
-  --ink: oklch(0.30 0.018 62);
-  --muted: oklch(0.46 0.02 70);
-  --on-primary: oklch(0.945 0.028 88);
-  --on-primary-soft: oklch(0.74 0.0234 196);
+  --paper: #fbfaf7;
+  --paper-2: #f2f0ea;
+  --ink: #221f1b;
+  --muted: #57524a;
+  --accent: #1e4a4d;
+  --accent-hover: #143336;
+  --rule: #e2ded4;
 
-  --font-display: 'Archivo', system-ui, sans-serif;
-  --font-serif: 'Newsreader', Georgia, serif;
-  --font-hand: 'Caveat', cursive;
+  --font-body: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-meta: system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --content-width: 1080px;
+  --content-width: 760px;
+  --wide-width: 1040px;
 }
 
 *,
@@ -34,30 +34,23 @@ body {
 }
 
 body {
-  background: var(--cream);
+  background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
 a {
-  color: var(--oxblood);
-  text-decoration: none;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 
 a:hover {
-  color: color-mix(in oklab, var(--oxblood) 80%, black);
-}
-
-/* inline links in body copy need a non-color cue, not just a color shift */
-p a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-::selection {
-  background: var(--accent);
-  color: var(--primary-dd);
+  color: var(--accent-hover);
 }
 
 img {
@@ -65,7 +58,6 @@ img {
   display: block;
 }
 
-/* visible keyboard focus everywhere, regardless of component */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -84,57 +76,90 @@ img {
   border: 0;
 }
 
+/* ---- layout ---- */
+
 .wrap {
   max-width: var(--content-width);
   margin: 0 auto;
-  padding-inline: 24px;
+  padding-inline: 22px;
+}
+
+.wrap-wide {
+  max-width: var(--wide-width);
+  margin: 0 auto;
+  padding-inline: 22px;
 }
 
 @media (min-width: 640px) {
-  .wrap {
-    padding-inline: 40px;
+  .wrap,
+  .wrap-wide {
+    padding-inline: 32px;
   }
 }
 
-.eyebrow {
-  font-family: var(--font-display);
+.section {
+  padding-block: clamp(38px, 6vw, 56px);
+  border-top: 1px solid var(--rule);
+}
+
+/* ---- type ---- */
+
+h1,
+h2,
+h3 {
   font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-wrap: pretty;
 }
 
-.section-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  border-bottom: 2px solid var(--ink);
-  padding-bottom: 16px;
-  margin-bottom: 34px;
+h2 {
+  font-size: clamp(23px, 3vw, 27px);
+  margin: 0 0 20px;
 }
 
-.section-heading h2 {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(28px, 4vw, 38px);
-  letter-spacing: -0.02em;
-  color: var(--primary);
+h3 {
+  font-size: 19px;
   margin: 0;
 }
 
-.section-heading .tag {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.14em;
+p {
+  margin: 0 0 18px;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+.meta {
+  font-family: var(--font-meta);
+  font-size: 13px;
+  line-height: 1.5;
   color: var(--muted);
-  white-space: nowrap;
+}
+
+.lede {
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+/* Shared list style — plain, no coloured markers. */
+.plain-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plain-list li {
+  line-height: 1.6;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

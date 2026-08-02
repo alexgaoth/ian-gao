@@ -12,7 +12,8 @@ ownership.
 3. Build settings:
    - **Framework preset**: Astro
    - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
+   - **Build output directory**: `dist/client` — the Cloudflare adapter emits static assets there, not
+     into `dist/` (which also holds an empty `server/`). Pointing Pages at `dist` deploys nothing.
    - **Node version**: 20 or later (set `NODE_VERSION=20` as an environment variable if Cloudflare doesn't pick it
      up automatically — this repo was built and tested against Node 24)
 4. Deploy. Cloudflare will give you a `*.pages.dev` URL first — confirm the site loads there before wiring up the
@@ -82,7 +83,11 @@ mobile simulation (4x CPU throttle + slow 4G) reports a much worse LCP (~4s); th
 not a real-device number, and per the spec's own guidance the number that actually matters is **Search Console's
 Core Web Vitals report using real field data**, not a local lab run. Check that report ~2–4 weeks after launch once
 Chrome UX Report has enough real visits to populate it. If it does show a slow mobile LCP, the first lever to pull
-is self-hosting the three Google Fonts instead of loading them from `fonts.googleapis.com`.
+is self-hosting the one remaining Google Font (Newsreader — Archivo and Caveat were dropped in the Aug 2026
+redesign) instead of loading it from `fonts.googleapis.com`. Note this is already measurable: under Lighthouse's
+default *simulated* slow-4G mobile profile the homepage scores perf 0.85 with LCP 3.4s, and the LCP breakdown is 87%
+render delay attributable to that cross-origin stylesheet — not to any image. Under `--throttling-method=provided`
+the same page measures LCP 0.2-0.3s. Self-hosting the single woff2 removes the critical-path hop.
 
 ---
 
@@ -91,18 +96,56 @@ is self-hosting the three Google Fonts instead of loading them from `fonts.googl
 These were deliberately left as honest placeholders rather than faked, per the project's own ground rules. Nothing
 is broken without them, but the site is more convincing with them:
 
-- **Photos.** Bio portrait and theatre production stills are all clearly-marked placeholder blocks right now
-  (`src/components/ImagePlaceholder.astro`). Drop images into `src/assets/` and swap the placeholder usages for
-  Astro's `<Image />` component (already the planned pattern per the spec — WebP/AVIF, lazy-loaded except the hero).
+- **Photos still missing (Aug 2026).** Real photos are now wired into the hero, Speech and Debate, Research,
+  Campaigning and `/gallery`. Still needed, all in Ian's Drive but not yet downloaded to this machine — the local
+  copy is a 2026-07-16 download and these were uploaded 07-27/28: `website logo picture` (favicon/logo → his face),
+  `Ian main picture` (hero photo swap), `ian theater 1`–`6` (Theatre section, which currently has no photos),
+  `Ian with Matt mahan.png` (his newer campaign photo), and `gallery 5`–`9` and `11`. Drop them in `src/assets/`
+  and use Astro's `<Image />`. The Theatre list already reserves a photo column per production — set `photo:` on the
+  entry in `src/pages/index.astro` and it renders with no CSS change.
+- **Per-photo gallery captions.** Ian said he'd write "small subtitles" for each gallery photo later. Each entry in
+  `src/pages/gallery.astro` has an empty `caption` field that renders only when filled — none were invented.
 - **LinkedIn URL.** Not included anywhere — there was no confirmed URL to link to. Add it to `src/lib/site.ts`
   (`SITE.sameAs`) and to the contact section on the homepage once you have it.
-- **Backlink URLs.** The `/about` page has a "links go live here once they're confirmed" placeholder for the Leland
-  Speech & Debate team page and the school newspaper article. Once you have the URLs, add them in
-  `src/pages/about.astro` (`pressMentions`) — and per the spec, it's worth asking whoever maintains those pages to
-  link back to ian-gao.com, since that's a real backlink from an already-indexed page.
+- **Backlink URLs.** As of Aug 2026 the "Elsewhere" section on `/about` renders **nothing** — the empty
+  "(link pending)" placeholder shelf was removed deliberately (it announced that people write about Ian without
+  linking to anything). The section reappears automatically as soon as real URLs exist: add
+  `{ label, href }` entries to `pressMentions` in `src/pages/about.astro`. The two expected entries are the Leland
+  Speech & Debate team page and the school newspaper article. Per the spec, it's worth asking whoever maintains
+  those pages to link back to ian-gao.com — a real backlink from an already-indexed page.
+- **"What I believe" section.** Ian asked for more "what I believe in" rather than what he is. `src/data/beliefs.ts`
+  exports an empty array and the homepage section renders nothing until it is filled. **Nothing was written on his
+  behalf** — this needs his own words, in his own voice.
 - **Phone number.** The resume lists a personal cell number; it was deliberately left off every public page. A
   minor's phone number on an indexed site is a spam/harassment surface with no real upside over the email address
   already in use — flagging this rather than silently omitting it in case you want it included anyway.
+
+### Decisions only Ian can make (from the Aug 2026 review pass)
+
+These came out of implementing Ian's own written feedback. Each was deliberately **not** decided by the agent.
+
+- **GPA / SAT / AP block on `/about`.** Currently reads "4.33 weighted GPA, 4.00 unweighted, 1540 SAT" plus the six
+  AP courses. This is the most admissions-officer-only content on the site, and Ian wrote that his "target audience
+  shouldn't be just AOs" and that he's worried classmates will search "Ian Gao Leland" and find the site. It was
+  kept because deleting a true accomplishment isn't the agent's call. Three options: (a) keep as-is, (b) drop the
+  scores and keep the AP course list, (c) drop the block. There is an `OPEN DECISION FOR IAN` comment at the code
+  site in `src/pages/about.astro`.
+- **Ian's doc contradicts itself on California rank.** His bio paragraph says the team is "ranked third in
+  California"; his debate bullet says "second best in California". The site prints his bio wording once and omits
+  the other rather than shipping both. He should say which is right.
+- **Should `/activities` exist at all?** It is the most résumé-like page on the site and largely duplicates the
+  homepage sections (only Track & Field is unique to it). Retiring it would serve the "less resume listing" goal,
+  but it's a content deletion, so it's Ian's call. It is currently linked from the footer so it isn't orphaned.
+- **Confirm the INT 93LS grade.** "Earned an A in INT 93LS" appears in Ian's review doc but *not* in his resume.
+  Worth confirming before it's indexed and ingested by answer engines.
+- **`gallery 2` shows another, apparently young, person** ("my favorite photo of gloria"). Included because Ian
+  designated it a gallery photo, but worth a consent check before the site is public.
+- **`gallery 3` appears twice** — in `/gallery` and in the Campaigning section, since Ian asked for a Mahan photo
+  there and this was the only one available locally. Fine, but intentional to know about.
+- **The accent colour is still teal.** Ian wrote "Change color, I agree the green is pretty impersonal". The page
+  *background* changed completely (dark teal chrome → warm paper) and the brass/oxblood accents are gone, which is
+  most of what read as impersonal — but the single remaining accent, `#1e4a4d`, is very close to the retired
+  `#1d4748`. If he wants a genuinely different hue, it is one variable in `src/styles/global.css`.
 - **First essays.** `/writing/` is wired up end-to-end (collection schema, RSS, individual post template with
   `BlogPosting` JSON-LD) but empty — it shows an honest "nothing published yet" state rather than fabricated sample
   posts. Add `.mdx` files to `src/content/writing/` whenever the first essay is ready; frontmatter needs `title`,
@@ -122,7 +165,7 @@ is broken without them, but the site is more convincing with them:
 - Astro 7, static output, `@astrojs/mdx` + `@astrojs/sitemap` + `@astrojs/rss`.
 - Design: "The Study" from the Claude Design export, Deep Teal palette, baked as static CSS custom properties (no
   client-side theme picker shipped).
-- Pages: `/`, `/about`, `/activities`, `/writing/` + `/writing/[slug]`, plus `robots.txt`, `llms.txt`, `rss.xml`,
+- Pages: `/`, `/about`, `/activities`, `/gallery`, `/writing/` + `/writing/[slug]`, plus `robots.txt`, `llms.txt`, `rss.xml`,
   `sitemap-index.xml`.
 - `Person` JSON-LD on the homepage, `BlogPosting` JSON-LD wired into the post template for whenever posts exist.
 - All content is the real resume Ian provided — no fabricated tournament results, quotes, or credentials. Where the
