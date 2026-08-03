@@ -6,7 +6,15 @@ import g01 from '../assets/gallery/gallery-01.jpg';
 import g02 from '../assets/gallery/gallery-02.jpg';
 import g03 from '../assets/gallery/gallery-03.jpg';
 import g04 from '../assets/gallery/gallery-04.jpg';
+import g05 from '../assets/gallery/gallery-05.jpg';
+import g06 from '../assets/gallery/gallery-06.jpg';
+import g07 from '../assets/gallery/gallery-07.jpg';
+import g08 from '../assets/gallery/gallery-08.jpg';
+import g09 from '../assets/gallery/gallery-09.jpg';
 import g10 from '../assets/gallery/gallery-10.jpg';
+import g11 from '../assets/gallery/gallery-11.jpg';
+import g12 from '../assets/gallery/gallery-12.jpg';
+import g13 from '../assets/gallery/gallery-13.jpg';
 
 /*
   Captions are Ian's to write — he noted "I'll add small subtitles to each picture later".
@@ -16,12 +24,21 @@ import g10 from '../assets/gallery/gallery-10.jpg';
   `alt` is written from what is actually visible in each photo (required for accessibility),
   and deliberately claims nothing beyond that.
 
-  Still missing from Drive: gallery 5, 6, 7, 8, 9, 11.
+  All 13 of Ian's gallery photos are wired in. Note gallery 8 and gallery 9 each arrived as two
+  different images (a .jpg and a .heic; and a duplicate filename), so the numbering here runs 1-13.
 */
 const photos = [
-  { src: g10, alt: 'Ian in a suit and tie, photographed in a mirror', caption: '' },
+  { src: g12, alt: 'Ian in a suit and tie, photographed in a mirror', caption: '' },
+  { src: g09, alt: 'Ian standing outside the Superior Court Hall of Justice', caption: '' },
   { src: g03, alt: 'Ian with Matt Mahan and fellow campaign volunteers', caption: '' },
+  { src: g13, alt: 'Ian and a friend with trays of food at a McDonald\u2019s', caption: '' },
   { src: g04, alt: 'Ian and a friend at an NBA game, with LeBron James circled far down on the court', caption: '' },
+  { src: g05, alt: 'Ian sitting inside a large sand sculpture on a beach', caption: '' },
+  { src: g06, alt: 'Ian in a baseball cap looking out at boats on the water at night', caption: '' },
+  { src: g07, alt: 'Ian in a red robe and teal tie in costume, wearing a stage mic', caption: '' },
+  { src: g08, alt: 'Ian backstage in costume with a stage mic', caption: '' },
+  { src: g10, alt: 'Ian in costume wearing a laurel wreath and a patterned jacket', caption: '' },
+  { src: g11, alt: 'Ian in a blue robe costume with a false white moustache', caption: '' },
   { src: g02, alt: 'A young child climbing on a large whale sculpture in a courtyard', caption: '' },
   { src: g01, alt: 'Ian as a toddler in a blue cardigan', caption: '' },
 ];
@@ -29,7 +46,7 @@ const photos = [
 
 <Layout
   title="Photos"
-  description="A few photos from Ian Gao's life outside of school — campaign work, family, and the occasional very distant celebrity sighting."
+  description="Photos from Ian Gao's life outside of school — campaign work, courtwatching, theatre, friends, and one very distant celebrity sighting."
 >
   <header class="page-head">
     <div class="wrap">

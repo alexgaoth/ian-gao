@@ -13,8 +13,13 @@ import speaking1 from '../assets/ian-stage-2.jpg';
 import speaking2 from '../assets/ian-stage-1.png';
 import ucsbPhoto from '../assets/ian-ucsb-research.png';
 import mahanPhoto from '../assets/ian-mahan-campaign.png';
-// "Ian with Mahan(need editing).jpg" from Ian's photo set — he flagged it as needing a crop.
-import mahanWithIan from '../assets/gallery/gallery-03.jpg';
+// Ian's "Ian with Matt mahan" — the photo he asked to sit alongside the one already there.
+import mahanWithIan from '../assets/ian-mahan-with.jpg';
+// "Ian theater 4/5/6". Ian numbered these without naming productions, so they run as a row
+// rather than being attributed to a specific show — see the note above `productions`.
+import theatre1 from '../assets/theatre/theatre-1.jpg';
+import theatre2 from '../assets/theatre/theatre-2.jpg';
+import theatre3 from '../assets/theatre/theatre-3.jpg';
 
 const debateResults = [
   { event: 'NSDA Nationals, LD', result: '19th in the nation', year: '2026' },
@@ -87,9 +92,11 @@ const campaigns = [
 ];
 
 /*
-  `photo` is the drop-in slot for Ian's `ian theater 1`–`6` files, which are in his Drive but not
-  yet on this machine. To fill one in: `import earnest from '../assets/theatre/earnest.jpg'` and
-  set `photo: earnest`. The row layout already reserves the column — no CSS change needed.
+  `photo` attaches a still to a specific production. Ian supplied "Ian theater 4/5/6" numbered but
+  WITHOUT naming which show each is from, so they run as an unattributed row above this list rather
+  than being guessed into rows. Once he says which production each belongs to, set
+  `photo: theatre2` (etc.) on that entry — the row layout already reserves the column, no CSS change.
+  `ian theater 1`, `2` and `3` are still missing from the download.
 */
 interface Production {
   show: string;
@@ -132,7 +139,7 @@ const productions: Production[] = [
       <Image
         class="hero-photo"
         src={portrait}
-        alt="Ian Gao"
+        alt="Ian Gao wearing headphones at a museum exhibit"
         widths={[280, 560]}
         sizes="clamp(240px, 24vw, 280px)"
         loading="eager"
@@ -290,6 +297,11 @@ const productions: Production[] = [
     <div class="wrap">
       <h2>Theatre</h2>
       <p>I've been part of six productions with Leland Theatre since 2023.</p>
+      <div class="photo-row">
+        <figure><Image src={theatre2} alt="Ian and two castmates in period costume on stage" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+        <figure><Image src={theatre3} alt="Ian and a castmate in metallic gold and iridescent costumes in front of a red curtain" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+        <figure><Image src={theatre1} alt="Ian performing on stage under coloured lights" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+      </div>
       <ol class="productions">
         {productions.map((p) => (
           <li>
@@ -439,6 +451,31 @@ const productions: Production[] = [
 
   .photo-pair figure {
     margin: 0;
+  }
+
+  .photo-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 22px 0 26px;
+  }
+
+  @media (min-width: 700px) {
+    .photo-row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .photo-row figure {
+    margin: 0;
+  }
+
+  .photo-row :global(img) {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 3px;
   }
 
   .photo-pair.even :global(img) {

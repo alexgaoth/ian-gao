@@ -1,8 +1,0 @@
-<!-- Interim mark in the current palette. Ian asked for a photo of his face here
-     ("website logo picture"); this replaces the retired brass-on-dark-teal monogram
-     until that file is available. -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="10" fill="#fbfaf7" />
-  <rect width="64" height="64" rx="10" fill="none" stroke="#e2ded4" stroke-width="2" />
-  <text x="32" y="44" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="34" fill="#1e4a4d">IG</text>
-</svg>

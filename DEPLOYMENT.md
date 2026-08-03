@@ -96,13 +96,16 @@ the same page measures LCP 0.2-0.3s. Self-hosting the single woff2 removes the c
 These were deliberately left as honest placeholders rather than faked, per the project's own ground rules. Nothing
 is broken without them, but the site is more convincing with them:
 
-- **Photos still missing (Aug 2026).** Real photos are now wired into the hero, Speech and Debate, Research,
-  Campaigning and `/gallery`. Still needed, all in Ian's Drive but not yet downloaded to this machine — the local
-  copy is a 2026-07-16 download and these were uploaded 07-27/28: `website logo picture` (favicon/logo → his face),
-  `Ian main picture` (hero photo swap), `ian theater 1`–`6` (Theatre section, which currently has no photos),
-  `Ian with Matt mahan.png` (his newer campaign photo), and `gallery 5`–`9` and `11`. Drop them in `src/assets/`
-  and use Astro's `<Image />`. The Theatre list already reserves a photo column per production — set `photo:` on the
-  entry in `src/pages/index.astro` and it renders with no CSS change.
+- **Photos (Aug 2026 — mostly resolved).** Ian's photo set has been delivered and wired in: the hero uses
+  `Ian main picture`, the favicon/apple-touch-icon are generated from `website logo picture` (his face),
+  `Ian with Matt mahan` sits beside the existing campaign photo, `Ian theater 4/5/6` run as a row in the Theatre
+  section, and all 13 gallery images are on `/gallery`. **Still missing: `ian theater 1`, `ian theater 2` and
+  `ian theater 3`** — they exist in Ian's Drive but were not in the download. Drop them in `src/assets/theatre/`
+  and add them to the row in `src/pages/index.astro`.
+- **Which theatre photo belongs to which production?** Ian numbered the theatre stills without naming the shows, so
+  they are shown as an unattributed row rather than guessed into specific productions. Each production row already
+  has a working `photo?` slot — tell the agent which still goes with which show and it becomes a one-line change per
+  photo, no CSS edit.
 - **Per-photo gallery captions.** Ian said he'd write "small subtitles" for each gallery photo later. Each entry in
   `src/pages/gallery.astro` has an empty `caption` field that renders only when filled — none were invented.
 - **LinkedIn URL.** Not included anywhere — there was no confirmed URL to link to. Add it to `src/lib/site.ts`
@@ -130,9 +133,6 @@ These came out of implementing Ian's own written feedback. Each was deliberately
   kept because deleting a true accomplishment isn't the agent's call. Three options: (a) keep as-is, (b) drop the
   scores and keep the AP course list, (c) drop the block. There is an `OPEN DECISION FOR IAN` comment at the code
   site in `src/pages/about.astro`.
-- **Ian's doc contradicts itself on California rank.** His bio paragraph says the team is "ranked third in
-  California"; his debate bullet says "second best in California". The site prints his bio wording once and omits
-  the other rather than shipping both. He should say which is right.
 - **Should `/activities` exist at all?** It is the most résumé-like page on the site and largely duplicates the
   homepage sections (only Track & Field is unique to it). Retiring it would serve the "less resume listing" goal,
   but it's a content deletion, so it's Ian's call. It is currently linked from the footer so it isn't orphaned.
@@ -140,8 +140,9 @@ These came out of implementing Ian's own written feedback. Each was deliberately
   Worth confirming before it's indexed and ingested by answer engines.
 - **`gallery 2` shows another, apparently young, person** ("my favorite photo of gloria"). Included because Ian
   designated it a gallery photo, but worth a consent check before the site is public.
-- **`gallery 3` appears twice** — in `/gallery` and in the Campaigning section, since Ian asked for a Mahan photo
-  there and this was the only one available locally. Fine, but intentional to know about.
+- **The Mahan group photo appears twice** — `gallery 3` and `Ian with Matt mahan` are the same scene, and Ian asked
+  for the photo in both places (gallery list *and* the Campaigning section). Both are shown as instructed; say the
+  word if you'd rather it appear only once.
 - **The accent colour is still teal.** Ian wrote "Change color, I agree the green is pretty impersonal". The page
   *background* changed completely (dark teal chrome → warm paper) and the brass/oxblood accents are gone, which is
   most of what read as impersonal — but the single remaining accent, `#1e4a4d`, is very close to the retired

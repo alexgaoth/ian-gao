@@ -9,7 +9,9 @@ A personal site for Ian Gao, rising senior, built primarily to support college a
 ## Inputs in this folder
 
 - `ian-gao-site-technical-spec.md` — stack, hosting, SEO/GEO technical requirements. Non-negotiable.
-- A Claude Design export (zip) — Treat it as the visual/layout starting point once it arrives: extract it, study the palette/type/layout/component choices, then rebuild those choices natively as Astro components. Do not just serve the static export as-is — it needs to become real Astro pages/components wired to the content collections defined in the spec, with the SEO head tags, schema, and sitemap generation from that spec intact. If asked to start before the zip arrives, build the structure and content first, layer the design in once it lands.
+- `Tianyi (Ian) Gao Resume.md` — factual backing for credentials.
+- Google Doc "Ian Gao Site — Text for Review", id `17g9jhWdamCh4IYN5vEgSWrXsRY3brRHkDL72lilMZqk` — Ian's own copy edits and design feedback, and he keeps editing it between sessions. **Re-fetch it before any content change. Where it conflicts with the resume, the Doc wins** — it is newer and it is him. (Settled example: the team is "third in California", not the resume's "3rd in the nation".)
+- The Claude Design export ("The Study" — dark teal chrome, brass accents, ticker) was built, then deliberately replaced in Aug 2026 after Ian's review. Don't reinstate it.
 
 ## Non-negotiables (do not regress these, ever, across any iteration)
 
@@ -26,28 +28,37 @@ If a design change would break any of the above (e.g. a hero animation that tank
 
 ## Design philosophy — this has to feel personal, not templated
 
-Ground every design decision in Ian's actual world, not in generic "student portfolio" conventions. His world: competitive debate (president of a top-5 national program, ranked nationally in Lincoln-Douglas), research internships (CCIR, UCSB SRA, UCSC SIP), political campaign work, theatre, basketball, guitar. Pull from that vernacular, not from stock portfolio-template language.
+Ground every design decision in Ian's actual world, not in generic "student portfolio" conventions.
 
-Explicitly avoid the three current AI-design defaults unless a real reason pulls toward one of them: cream background + serif + terracotta accent, near-black + single neon accent, broadsheet/hairline-rule newspaper layout. Pick one real, deliberate visual direction and commit to it, take one actual aesthetic risk you can justify rather than landing on whichever of the three defaults is closest to "safe."
+**Ian reviewed the first build and rejected its tone**: "too cringey/braggy", "trying really hard to be cool but failing pretty miserably → Pretentious feel". He asked for "a lot simpler", said "a bit more bland is okay with me", and is specifically afraid classmates and next year's debate novices will search "Ian Gao Leland" and find it. Restrained beats striking. Keep every fact, drop the trophy-case framing: no ticker/marquee, no KPI stat tiles, no ALL-CAPS letterspaced section tags, one typeface, one accent, hairline rules over bordered cards. **Do not "take an aesthetic risk" here** — that instruction is what produced the version he rejected.
 
-Copy should sound like Ian, specific and plain, not like generic admissions-portfolio marketing copy ("passionate," "driven," "well-rounded"). Prefer concrete specifics (rank, program name, actual competition names) over adjectives.
+Copy should sound like Ian, specific and plain, not like generic admissions-portfolio marketing copy ("passionate," "driven," "well-rounded"). Prefer concrete specifics over adjectives.
+
+Never write facts, opinions, or beliefs on Ian's behalf. Where content needs his input, ship a data file that renders nothing when empty (`src/data/beliefs.ts`, `pressMentions` in `about.astro`) rather than a visible "coming soon" placeholder.
 
 Build to a quality floor without announcing it: responsive down to mobile, visible keyboard focus states, reduced-motion respected for anyone with that OS setting on.
 
 ## Content source of truth (from Ian's own notes, use as-is until told otherwise)
 
-**Bio (homepage / about):**
-Ian Gao, senior at Leland High School, researcher at UCSB and UCSC. President of Leland Speech and Debate (top 5 program nationally), ranked 19th nationally in Lincoln-Douglas debate. Interned on political campaigns: Evan Low for Congress, Matt Mahan for Governor. Outside debate and research: acting in theatre, basketball, learning guitar.
+**Homepage bio is Ian's verbatim "changes 7/27" text from the review Doc.** Don't paraphrase it without asking him.
 
-**Section structure:**
-- **Debate** — President role, competitive records
-- **Research** — CCIR, UCSB SRA, UCSC SIP
-- **Campaigning** — Matt Mahan, Evan Low
-- **Theatre** — performance clips, production photos
+**Section structure:** Debate · Research (CCIR, UCSB SRA, UCSC SIP) · Campaigning (Matt Mahan, Evan Low) · Theatre · Photos (`/gallery`) · Writing.
 
-**Flagged as missing (do not fabricate placeholders that look real):** photos across bio and theatre sections. Use clearly-marked placeholder blocks until real images are supplied, don't ship stock photography that could be mistaken for him.
+**Voice is first person throughout** — third-person self-description reads as the résumé tone Ian objected to.
 
-**Existing external assets to link to/from** (real backlink value, see spec doc section 7): school debate team page, school newspaper article on his track/debate activity.
+**Do not fabricate.** Every claim must trace to the resume or the review Doc. Two facts live only in the Doc and not the resume — the INT 93LS grade and the LD topic "military intervention" (resume says "wealth tax") — so don't "correct" them against the resume.
+
+**External assets to link to/from** (backlink value, spec §7): school debate team page, school newspaper article. Both still unconfirmed URLs.
+
+## Build & tooling gotchas
+
+- **Static output lands in `dist/client/`, not `dist/`** (Cloudflare adapter). Verification greps and the Cloudflare Pages "build output directory" must both use `dist/client` — pointing Pages at `dist` deploys nothing.
+- `astro.config.mjs` needs `imageService: 'compile'`. Cloudflare's autoconfig resets it; re-apply after any autoconfig run or prod images 404.
+- Content collections live in `src/content.config.ts` with a `glob()` loader. Astro ≥6 hard-errors on the legacy `src/content/config.ts`.
+- Deleting an MDX post without clearing `node_modules/.astro/data-store.json` makes `astro build` fail on the phantom route.
+- Photos from Ian arrive as HEIC. `sharp` can't decode it and there's no ImageMagick HEIC delegate here — use `npm i heic-convert`. Also strip EXIF rotation with sharp's `.rotate()` or portraits land sideways.
+- Playwright: pass `executablePath: '~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome'`; a newer playwright asks for a build that isn't installed.
+- **A Playwright element screenshot of a `loading="lazy"` image comes back blank** — it scrolls into view and shoots before the fetch lands. Scroll the whole page, then `waitForFunction(() => [...document.images].every(i => i.complete && i.naturalWidth > 0))`. This has twice looked like a broken image that wasn't.
 
 ## Iteration workflow
 
@@ -61,14 +72,11 @@ Ian Gao, senior at Leland High School, researcher at UCSB and UCSC. President of
 - [ ] Site builds clean, no errors/warnings
 - [ ] Sitemap and robots.txt still generating correctly
 - [ ] JSON-LD on homepage and one sample post passes Google's Rich Results Test
-- [ ] Lighthouse (or equivalent) run, Core Web Vitals still in target range
+- [ ] Lighthouse run, Core Web Vitals still in target range. Use `--preset=desktop --throttling-method=provided`; Lighthouse's *default* simulated slow-4G reports LCP ~3.4s on the same build that measures 0.2s unthrottled, and the gap is the render-blocking Google Fonts stylesheet, not the images. Don't chase the simulated number without saying which you measured.
 - [ ] Keyboard-only nav reaches every interactive element, visible focus state present
 - [ ] Mobile viewport checked, not just desktop
 - [ ] No new console errors
 
-## Open items blocking full personalization
+## Open items
 
-- [ ] Claude Design zip not yet provided
-- [ ] Photos (bio + theatre) not yet provided
-- [ ] Chinese-language version decision (from spec doc, still open)
-- [ ] Git-based MDX vs lightweight CMS decision for how Ian edits posts (from spec doc, still open)
+Tracked in `DEPLOYMENT.md` — one list, not two. It holds both the launch checklist and the "Decisions only Ian can make" section (GPA/SAT block, retiring `/activities`, missing `ian theater 1–3`, i18n, CMS-vs-MDX). Update it there when something resolves.
