@@ -5,8 +5,7 @@
 ## Key pages
 
 - [Homepage](https://ian-gao.com/): overview of debate, research, campaigning, and theatre
-- [About](https://ian-gao.com/about/): education, leadership roles, awards
-- [Activities](https://ian-gao.com/activities/): full list of extracurriculars
+- [Activities](https://ian-gao.com/activities/): full list of extracurriculars and leadership roles
 - [Writing](https://ian-gao.com/writing/): essays (in progress)
 - [Photos](https://ian-gao.com/gallery/): photos from campaign work, family, and life outside school
 

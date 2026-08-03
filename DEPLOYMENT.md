@@ -96,12 +96,11 @@ the same page measures LCP 0.2-0.3s. Self-hosting the single woff2 removes the c
 These were deliberately left as honest placeholders rather than faked, per the project's own ground rules. Nothing
 is broken without them, but the site is more convincing with them:
 
-- **Photos (Aug 2026 — mostly resolved).** Ian's photo set has been delivered and wired in: the hero uses
-  `Ian main picture`, the favicon/apple-touch-icon are generated from `website logo picture` (his face),
-  `Ian with Matt mahan` sits beside the existing campaign photo, `Ian theater 4/5/6` run as a row in the Theatre
-  section, and all 13 gallery images are on `/gallery`. **Still missing: `ian theater 1`, `ian theater 2` and
-  `ian theater 3`** — they exist in Ian's Drive but were not in the download. Drop them in `src/assets/theatre/`
-  and add them to the row in `src/pages/index.astro`.
+- **Photos — complete (Aug 2026).** Every file Ian supplied is now on the site: hero = `Ian main picture`,
+  favicon/apple-touch-icon generated from `website logo picture` (his face), `Ian debating` beside the Nationals
+  photo in Speech and Debate, `Ian with Matt mahan` beside the existing campaign photo, all six `Ian theater 1-6`
+  stills in the Theatre section (1-3 above the production list, 4-6 below), and all 13 gallery images on
+  `/gallery`. Nothing outstanding.
 - **Which theatre photo belongs to which production?** Ian numbered the theatre stills without naming the shows, so
   they are shown as an unattributed row rather than guessed into specific productions. Each production row already
   has a working `photo?` slot — tell the agent which still goes with which show and it becomes a one-line change per
@@ -110,12 +109,10 @@ is broken without them, but the site is more convincing with them:
   `src/pages/gallery.astro` has an empty `caption` field that renders only when filled — none were invented.
 - **LinkedIn URL.** Not included anywhere — there was no confirmed URL to link to. Add it to `src/lib/site.ts`
   (`SITE.sameAs`) and to the contact section on the homepage once you have it.
-- **Backlink URLs.** As of Aug 2026 the "Elsewhere" section on `/about` renders **nothing** — the empty
-  "(link pending)" placeholder shelf was removed deliberately (it announced that people write about Ian without
-  linking to anything). The section reappears automatically as soon as real URLs exist: add
-  `{ label, href }` entries to `pressMentions` in `src/pages/about.astro`. The two expected entries are the Leland
-  Speech & Debate team page and the school newspaper article. Per the spec, it's worth asking whoever maintains
-  those pages to link back to ian-gao.com — a real backlink from an already-indexed page.
+- **Backlink URLs — now homeless.** `/about` was deleted (Aug 2026), and it held the "Elsewhere" section that was
+  going to carry these. The two expected links are the Leland Speech & Debate team page and the school newspaper
+  article. Decide where they live now (footer, or a short block on `/activities`). Per the spec it's still worth
+  asking whoever maintains those pages to link back to ian-gao.com — a real backlink from an already-indexed page.
 - **"What I believe" section.** Ian asked for more "what I believe in" rather than what he is. `src/data/beliefs.ts`
   exports an empty array and the homepage section renders nothing until it is filled. **Nothing was written on his
   behalf** — this needs his own words, in his own voice.
@@ -127,12 +124,13 @@ is broken without them, but the site is more convincing with them:
 
 These came out of implementing Ian's own written feedback. Each was deliberately **not** decided by the agent.
 
-- **GPA / SAT / AP block on `/about`.** Currently reads "4.33 weighted GPA, 4.00 unweighted, 1540 SAT" plus the six
-  AP courses. This is the most admissions-officer-only content on the site, and Ian wrote that his "target audience
-  shouldn't be just AOs" and that he's worried classmates will search "Ian Gao Leland" and find the site. It was
-  kept because deleting a true accomplishment isn't the agent's call. Three options: (a) keep as-is, (b) drop the
-  scores and keep the AP course list, (c) drop the block. There is an `OPEN DECISION FOR IAN` comment at the code
-  site in `src/pages/about.astro`.
+- **Content that vanished with `/about` (deleted Aug 2026).** Deleting the page removed, from the whole site: the
+  GPA/SAT/AP block (4.33 weighted, 4.00 unweighted, 1540 SAT, six 5s), both awards (National Spanish Exam Gold
+  Medal; NSDA Degree of Special Distinction), the languages line (Mandarin and English native, Spanish
+  conversational), and the long-form descriptions of Justice For All, RuDi and the D10 Youth Advisory Council —
+  `/activities` still carries one-line versions of those three, but nothing else survives. This resolves the old
+  "is the GPA/SAT block too AO-facing?" question by deletion. If any of it should come back, say where it goes;
+  the old page is recoverable with `git show HEAD:src/pages/about.astro`.
 - **Should `/activities` exist at all?** It is the most résumé-like page on the site and largely duplicates the
   homepage sections (only Track & Field is unique to it). Retiring it would serve the "less resume listing" goal,
   but it's a content deletion, so it's Ian's call. It is currently linked from the footer so it isn't orphaned.
@@ -166,7 +164,7 @@ These came out of implementing Ian's own written feedback. Each was deliberately
 - Astro 7, static output, `@astrojs/mdx` + `@astrojs/sitemap` + `@astrojs/rss`.
 - Design: "The Study" from the Claude Design export, Deep Teal palette, baked as static CSS custom properties (no
   client-side theme picker shipped).
-- Pages: `/`, `/about`, `/activities`, `/gallery`, `/writing/` + `/writing/[slug]`, plus `robots.txt`, `llms.txt`, `rss.xml`,
+- Pages: `/`, `/activities`, `/gallery`, `/writing/` + `/writing/[slug]`, plus `robots.txt`, `llms.txt`, `rss.xml`,
   `sitemap-index.xml`.
 - `Person` JSON-LD on the homepage, `BlogPosting` JSON-LD wired into the post template for whenever posts exist.
 - All content is the real resume Ian provided — no fabricated tournament results, quotes, or credentials. Where the

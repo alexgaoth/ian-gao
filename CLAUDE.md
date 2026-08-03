@@ -34,7 +34,7 @@ Ground every design decision in Ian's actual world, not in generic "student port
 
 Copy should sound like Ian, specific and plain, not like generic admissions-portfolio marketing copy ("passionate," "driven," "well-rounded"). Prefer concrete specifics over adjectives.
 
-Never write facts, opinions, or beliefs on Ian's behalf. Where content needs his input, ship a data file that renders nothing when empty (`src/data/beliefs.ts`, `pressMentions` in `about.astro`) rather than a visible "coming soon" placeholder.
+Never write facts, opinions, or beliefs on Ian's behalf. Where content needs his input, ship a data file that renders nothing when empty (e.g. `src/data/beliefs.ts`) rather than a visible "coming soon" placeholder.
 
 Build to a quality floor without announcing it: responsive down to mobile, visible keyboard focus states, reduced-motion respected for anyone with that OS setting on.
 
@@ -42,7 +42,7 @@ Build to a quality floor without announcing it: responsive down to mobile, visib
 
 **Homepage bio is Ian's verbatim "changes 7/27" text from the review Doc.** Don't paraphrase it without asking him.
 
-**Section structure:** Debate · Research (CCIR, UCSB SRA, UCSC SIP) · Campaigning (Matt Mahan, Evan Low) · Theatre · Photos (`/gallery`) · Writing.
+**Section structure:** Debate · Research (CCIR, UCSB SRA, UCSC SIP) · Campaigning (Matt Mahan, Evan Low) · Theatre · Photos (`/gallery`) · Writing. `/about` was deleted Aug 2026 — don't re-add it without asking.
 
 **Voice is first person throughout** — third-person self-description reads as the résumé tone Ian objected to.
 

@@ -11,15 +11,19 @@ import natsPhoto from '../assets/ian-nationals.jpg';
 // Moved out of Theatre and into Speech and Debate per Ian's 7/27 notes.
 import speaking1 from '../assets/ian-stage-2.jpg';
 import speaking2 from '../assets/ian-stage-1.png';
+import debatingPhoto from '../assets/ian-debating.jpg';
 import ucsbPhoto from '../assets/ian-ucsb-research.png';
 import mahanPhoto from '../assets/ian-mahan-campaign.png';
 // Ian's "Ian with Matt mahan" — the photo he asked to sit alongside the one already there.
 import mahanWithIan from '../assets/ian-mahan-with.jpg';
-// "Ian theater 4/5/6". Ian numbered these without naming productions, so they run as a row
-// rather than being attributed to a specific show — see the note above `productions`.
-import theatre1 from '../assets/theatre/theatre-1.jpg';
-import theatre2 from '../assets/theatre/theatre-2.jpg';
-import theatre3 from '../assets/theatre/theatre-3.jpg';
+// "Ian theater 1-6", kept in Ian's own numbering. He numbered them without naming productions,
+// so they run as rows rather than being attributed to a specific show — see note above `productions`.
+import theatre01 from '../assets/theatre/theatre-01.jpg';
+import theatre02 from '../assets/theatre/theatre-02.jpg';
+import theatre03 from '../assets/theatre/theatre-03.jpg';
+import theatre04 from '../assets/theatre/theatre-04.jpg';
+import theatre05 from '../assets/theatre/theatre-05.jpg';
+import theatre06 from '../assets/theatre/theatre-06.jpg';
 
 const debateResults = [
   { event: 'NSDA Nationals, LD', result: '19th in the nation', year: '2026' },
@@ -92,11 +96,10 @@ const campaigns = [
 ];
 
 /*
-  `photo` attaches a still to a specific production. Ian supplied "Ian theater 4/5/6" numbered but
-  WITHOUT naming which show each is from, so they run as an unattributed row above this list rather
-  than being guessed into rows. Once he says which production each belongs to, set
-  `photo: theatre2` (etc.) on that entry — the row layout already reserves the column, no CSS change.
-  `ian theater 1`, `2` and `3` are still missing from the download.
+  `photo` attaches a still to a specific production. Ian supplied "Ian theater 1-6" numbered but
+  WITHOUT naming which show each is from, so they run as unattributed rows (1-3 above the list,
+  4-6 below it) rather than being guessed into rows. Once he says which production each belongs to,
+  set `photo: theatre02` (etc.) on that entry — the row already reserves the column, no CSS change.
 */
 interface Production {
   show: string;
@@ -198,14 +201,13 @@ const productions: Production[] = [
         year I was Captain of Lincoln-Douglas; I'm now President of Debate at Leland Speech and Debate.
       </p>
 
-      <div class="photo-pair">
-        <figure>
+      <figure class="photo-pair-figure">
+        <div class="photo-pair">
           <Image src={speaking1} alt="Ian speaking at a podium on stage" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
-        </figure>
-        <figure>
           <Image src={speaking2} alt="Ian speaking on stage, gesturing mid-sentence" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
-        </figure>
-      </div>
+        </div>
+        <figcaption class="meta">At the 2025 Leland Speech and Debate Performance Night.</figcaption>
+      </figure>
 
       <h3 class="sub">Results</h3>
       <table class="results">
@@ -227,14 +229,21 @@ const productions: Production[] = [
         </tbody>
       </table>
 
-      <figure class="photo-single">
-        <Image src={natsPhoto} alt="Ian at the 2026 NSDA National Speech and Debate Tournament" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
-        <figcaption class="meta">At the 2026 NSDA National Tournament.</figcaption>
-      </figure>
+      <div class="photo-pair">
+        <figure>
+          <Image src={natsPhoto} alt="Ian at the 2026 NSDA National Speech and Debate Tournament" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+          <figcaption class="meta">At the 2026 NSDA National Tournament.</figcaption>
+        </figure>
+        <figure>
+          <Image src={debatingPhoto} alt="Ian speaking from a laptop stand in a debate round, with a judge seated in front of him" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+          <figcaption class="meta">Mid-round.</figcaption>
+        </figure>
+      </div>
 
-      <h3 class="sub">What the job actually involves</h3>
-      <!-- enlarged per Ian's open doc comment ("I want this to be bigger") -->
-      <ul class="plain-list big">
+      <h3 class="sub">As President of Debate</h3>
+      {/* Sized to match the body copy above. This reverses the earlier "[Enlarge by 2 times]"
+          note in Ian's doc — superseded by a later direct instruction; don't re-enlarge. */}
+      <ul class="plain-list">
         {debateBullets.map((b) => (
           <li>{b}</li>
         ))}
@@ -268,6 +277,16 @@ const productions: Production[] = [
   <section id="campaigning" class="section">
     <div class="wrap">
       <h2>Campaigning</h2>
+      {/* "fitting and adjusting it with the photo already there" — the two have very different
+          aspect ratios, so the pair is height-matched and cropped to centre rather than ragged. */}
+      <div class="photo-pair even">
+        <figure>
+          <Image src={mahanPhoto} alt="Ian on the Matt Mahan for Governor campaign" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        </figure>
+        <figure>
+          <Image src={mahanWithIan} alt="Ian with Matt Mahan and fellow campaign volunteers" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
+        </figure>
+      </div>
       {campaigns.map((c) => (
         <div class="entry">
           <h3>{c.name}</h3>
@@ -279,16 +298,6 @@ const productions: Production[] = [
           </ul>
         </div>
       ))}
-      {/* "fitting and adjusting it with the photo already there" — the two have very different
-          aspect ratios, so the pair is height-matched and cropped to centre rather than ragged. */}
-      <div class="photo-pair even">
-        <figure>
-          <Image src={mahanPhoto} alt="Ian on the Matt Mahan for Governor campaign" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
-        </figure>
-        <figure>
-          <Image src={mahanWithIan} alt="Ian with Matt Mahan and fellow campaign volunteers" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
-        </figure>
-      </div>
     </div>
   </section>
 
@@ -298,9 +307,9 @@ const productions: Production[] = [
       <h2>Theatre</h2>
       <p>I've been part of six productions with Leland Theatre since 2023.</p>
       <div class="photo-row">
-        <figure><Image src={theatre2} alt="Ian and two castmates in period costume on stage" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
-        <figure><Image src={theatre3} alt="Ian and a castmate in metallic gold and iridescent costumes in front of a red curtain" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
-        <figure><Image src={theatre1} alt="Ian performing on stage under coloured lights" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+        <figure><Image src={theatre01} alt="Ian on stage in a red patterned dressing gown, in scene with another actor" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+        <figure><Image src={theatre02} alt="Ian mid-scene with the ensemble on a chequered stage floor" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+        <figure><Image src={theatre03} alt="Ian in scene with another actor on a set decorated with blossom" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
       </div>
       <ol class="productions">
         {productions.map((p) => (
@@ -321,6 +330,11 @@ const productions: Production[] = [
           </li>
         ))}
       </ol>
+      <div class="photo-row">
+        <figure><Image src={theatre04} alt="Ian performing on stage under coloured lights" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+        <figure><Image src={theatre05} alt="Ian and two castmates in period costume on stage" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+        <figure><Image src={theatre06} alt="Ian and a castmate in metallic gold and iridescent costumes in front of a red curtain" widths={[300, 600]} sizes="(min-width: 700px) 240px, 90vw" loading="lazy" /></figure>
+      </div>
       <p><a href="https://youtu.be/_pUo7QA8DPk" rel="noopener">Watch some of my scenes! ↗</a></p>
     </div>
   </section>
@@ -393,13 +407,6 @@ const productions: Production[] = [
     margin: 4px 0 10px;
   }
 
-  /* Ian asked for these to be bigger; a literal 2× (36px) would outshout the section headings,
-     so they sit unmistakably above the 18px body and the 20px lede, but below the h2. */
-  .plain-list.big li {
-    font-size: 24px;
-    line-height: 1.5;
-  }
-
   .results {
     width: 100%;
     border-collapse: collapse;
@@ -451,6 +458,22 @@ const productions: Production[] = [
 
   .photo-pair figure {
     margin: 0;
+  }
+
+  .photo-pair-figure {
+    margin: 22px 0;
+  }
+
+  .photo-pair-figure .photo-pair {
+    margin: 0;
+  }
+
+  .photo-pair figcaption {
+    margin-top: 7px;
+  }
+
+  .photo-pair-figure > figcaption {
+    margin-top: 8px;
   }
 
   .photo-row {
