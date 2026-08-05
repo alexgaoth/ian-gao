@@ -52,6 +52,7 @@ Build to a quality floor without announcing it: responsive down to mobile, visib
 
 ## Build & tooling gotchas
 
+- **Prod deploys build from the `cloudflare/workers-autoconfig` branch, not `master`.** A commit that only lands on master never reaches ian-gao.com — cherry-pick or merge it onto that branch and push both.
 - **Static output lands in `dist/client/`, not `dist/`** (Cloudflare adapter). Verification greps and the Cloudflare Pages "build output directory" must both use `dist/client` — pointing Pages at `dist` deploys nothing.
 - `astro.config.mjs` needs `imageService: 'compile'`. Cloudflare's autoconfig resets it; re-apply after any autoconfig run or prod images 404.
 - Content collections live in `src/content.config.ts` with a `glob()` loader. Astro ≥6 hard-errors on the legacy `src/content/config.ts`.
