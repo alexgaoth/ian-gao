@@ -8,6 +8,9 @@ export default defineConfig({
   site: 'https://ian-gao.com',
   output: 'static',
   trailingSlash: 'ignore',
+  redirects: {
+    '/about': { status: 301, destination: '/' },
+  },
   integrations: [mdx(), sitemap()],
   adapter: cloudflare({ imageService: 'compile' }),
 });
