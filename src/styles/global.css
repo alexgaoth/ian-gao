@@ -60,6 +60,7 @@ img {
 
 /* ---- prose content (writing posts) ---- */
 
+.prose,
 .prose a {
   overflow-wrap: break-word;
 }
