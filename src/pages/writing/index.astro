@@ -5,12 +5,7 @@ import { getCollection } from 'astro:content';
 const allPosts = await getCollection('writing', ({ data }) => !data.draft);
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' });
 
-const posts = allPosts.sort((a, b) => {
-  const orderA = a.data.order ?? Number.MAX_SAFE_INTEGER;
-  const orderB = b.data.order ?? Number.MAX_SAFE_INTEGER;
-  if (orderA !== orderB) return orderA - orderB;
-  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-});
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Layout
