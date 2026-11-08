@@ -13,6 +13,8 @@ import speaking1 from '../assets/ian-stage-2.jpg';
 import speaking2 from '../assets/ian-stage-1.png';
 import debatingPhoto from '../assets/ian-debating.jpg';
 import ucsbPhoto from '../assets/ian-ucsb-research.png';
+import ccirPhoto from '../assets/ian-ccir-presentation.png';
+import ucscPhoto from '../assets/ian-ucsc-symposium.jpg';
 import mahanPhoto from '../assets/ian-mahan-campaign.png';
 // Ian's "Ian with Matt mahan" — the photo he asked to sit alongside the one already there.
 import mahanWithIan from '../assets/ian-mahan-with.jpg';
@@ -51,6 +53,9 @@ const research = [
       'Analyzed the impact of the Dayton Peace Agreement on Bosnia and Herzegovina’s political institutions, with a focus on ethnic power-sharing, governance, and democratic stability.',
       'Presented twice at the CCIR Research Symposium.',
     ],
+    photo: ccirPhoto,
+    photoAlt: 'Ian presenting his post-Dayton Bosnia research over video call at the CCIR symposium',
+    caption: 'Presenting my research on post-Dayton Bosnia at the Cambridge Centre for International Research Symposium (CCIR).',
   },
   {
     org: 'UC Santa Barbara — Summer Research Academies',
@@ -61,6 +66,9 @@ const research = [
       'Co-authored “A Model Policing Agency: Analyzing the Impact of the Collaborative Reform Initiative on Use of Force in San Francisco.”',
       'Used R to analyze large SFPD use-of-force datasets from 2018–2023, evaluating the Collaborative Reform Initiative’s effectiveness by incident severity and demographics.',
     ],
+    photo: ucsbPhoto,
+    photoAlt: 'Ian presenting an analysis of SFPD use-of-force data at UC Santa Barbara',
+    caption: 'Presenting our SFPD use-of-force analysis at UC Santa Barbara.',
   },
   {
     org: 'UC Santa Cruz — Science Internship Program',
@@ -69,7 +77,11 @@ const research = [
     points: [
       '“What is Love? — A Philosophical Inquiry.”',
       'Close reading and annotation of ancient and contemporary philosophers on the many theories of love, contributing to my mentor’s doctoral thesis.',
+      'Investigated love’s ability to break ethnocentric echo chambers and epistemic bubbles.',
     ],
+    photo: ucscPhoto,
+    photoAlt: 'Ian presenting at the UCSC Symposium on the philosophy of love',
+    caption: 'Presenting at UCSC Symposium on the philosophy of love.',
   },
 ];
 
@@ -138,6 +150,7 @@ const productions: Production[] = [
       <div class="hero-text">
         <h1>Ian Gao</h1>
         <p class="hero-tagline">philosophy · politics · policy</p>
+        <p class="hero-writing"><a href="/writing/">Read my latest writing</a></p>
       </div>
       <Image
         class="hero-photo"
@@ -253,23 +266,27 @@ const productions: Production[] = [
 
   <!-- RESEARCH -->
   <section id="research" class="section">
-    <div class="wrap">
+    <div class="wrap-wide research-wrap">
       <h2>Research</h2>
-      {research.map((r) => (
-        <div class="entry">
-          <h3>{r.org}</h3>
-          <p class="meta entry-meta">{r.tag} · {r.mentor}</p>
-          <ul class="plain-list">
-            {r.points.map((p) => (
-              <li>{p}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
-      <figure class="photo-single">
-        <Image src={ucsbPhoto} alt="Ian presenting an analysis of SFPD use-of-force data at UC Santa Barbara" widths={[340, 680]} sizes="(min-width: 640px) 340px, 90vw" loading="lazy" />
-        <figcaption class="meta">Presenting our SFPD use-of-force analysis at UC Santa Barbara.</figcaption>
-      </figure>
+      <div class="research-list">
+        {research.map((r, i) => (
+          <div class:list={['research-row', { flip: i % 2 === 1 }]}>
+            <div class="research-text">
+              <h3>{r.org}</h3>
+              <p class="meta entry-meta">{r.tag} · {r.mentor}</p>
+              <ul class="plain-list">
+                {r.points.map((p) => (
+                  <li>{p}</li>
+                ))}
+              </ul>
+            </div>
+            <figure class="research-photo">
+              <Image src={r.photo} alt={r.photoAlt} widths={[340, 680]} sizes="(min-width: 760px) 340px, 90vw" loading="lazy" />
+              <figcaption class="meta">{r.caption}</figcaption>
+            </figure>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -378,6 +395,11 @@ const productions: Production[] = [
     color: var(--muted);
     font-size: 19px;
     margin: 10px 0 0;
+  }
+
+  .hero-writing {
+    margin: 10px 0 0;
+    font-size: 16px;
   }
 
   /* Enlarged per Ian's "Enlarge profile pic/take a different one" note. The photo swap to
@@ -521,6 +543,74 @@ const productions: Production[] = [
 
   .photo-single figcaption {
     margin-top: 7px;
+  }
+
+  /* Research: roomy media rows on a wide container (the 760px prose column made the
+     side-by-side version feel cramped). Photos sit beside the text on desktop -
+     alternating sides for rhythm - and stack under it on phone. Hairline rules and
+     generous padding separate the programs. */
+  .research-wrap {
+    max-width: 980px;
+  }
+
+  .research-list {
+    margin-top: 6px;
+  }
+
+  .research-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-block: 34px;
+  }
+
+  .research-row:first-child {
+    padding-top: 8px;
+  }
+
+  .research-row + .research-row {
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (min-width: 760px) {
+    .research-row {
+      grid-template-columns: 1fr 340px;
+      gap: 52px;
+      align-items: center;
+      padding-block: 40px;
+    }
+
+    .research-row.flip {
+      grid-template-columns: 340px 1fr;
+    }
+
+    .research-row.flip .research-photo {
+      order: -1;
+    }
+  }
+
+  .research-text :global(h3) {
+    margin-bottom: 2px;
+  }
+
+  .research-text .plain-list {
+    margin-bottom: 0;
+  }
+
+  .research-photo {
+    margin: 0;
+  }
+
+  .research-photo :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+  }
+
+  .research-photo figcaption {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.45;
   }
 
   .productions {
